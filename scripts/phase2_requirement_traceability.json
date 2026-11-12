@@ -1,0 +1,77 @@
+{
+  "project": "GenX Leadership Academy Bounded Dual-Stream RAG",
+  "artifact": "phase2_requirement_traceability.json",
+  "timestamp": "2026-11-12T23:50:00Z",
+  "requirements_traceability": [
+    {
+      "req_id": "REQ-ING-01",
+      "description": "Read supplied mock transcript dataset and support n8n item wrappers",
+      "node": "Read Transcripts File & Parse Transcripts Array",
+      "implementation": "Reads /data/mock_transcripts.json via readWriteFile, parses UTF-8 JSON buffer without BOM, maps each session to an n8n item wrapper { json: session }.",
+      "status": "VERIFIED"
+    },
+    {
+      "req_id": "REQ-ING-02",
+      "description": "Turn sampling: first 40 and last 20 turns for long transcripts (>60 turns); avoid duplicate sampling for <= 60 turns",
+      "node": "Turn Sampler",
+      "implementation": "Checks transcript.length. If > 60, concatenates slice(0, 40) and slice(-20); otherwise preserves slice().",
+      "status": "VERIFIED"
+    },
+    {
+      "req_id": "REQ-ING-03",
+      "description": "Classify meetings using structured JSON (meeting_type, confidence_score, summary)",
+      "node": "Ollama Classifier & Validate Classification",
+      "implementation": "Ollama Classifier prompts llama3.2:1b with 4 rules; Validate Classification parses JSON, clamps score 0.0-1.0, and sets is_accepted.",
+      "status": "VERIFIED"
+    },
+    {
+      "req_id": "REQ-ING-04",
+      "description": "Accept only Client Coaching with confidence >= 0.80",
+      "node": "Firewall Gate",
+      "implementation": "If node evaluates is_accepted === true, requiring meeting_type === 'Client Coaching' AND confidence_score >= 0.80.",
+      "status": "VERIFIED"
+    },
+    {
+      "req_id": "REQ-ING-05",
+      "description": "Archive Internal Operations, Sales Discovery, Other, and low-confidence meetings into rejected_meetings without embeddings",
+      "node": "Format Rejected Record & Transactional Archive Rejected",
+      "implementation": "Firewall Gate false branch routes directly to archive_rejected_meeting PL/pgSQL function. Zero embeddings generated.",
+      "status": "VERIFIED"
+    },
+    {
+      "req_id": "REQ-ING-06",
+      "description": "Extract conceptual coaching frameworks preserving discussion meaning and source timestamps",
+      "node": "Ollama Framework Extractor & Format Dual-Stream Chunks",
+      "implementation": "Prompts llama3.2:1b for frameworks (name, definition, mechanism, application, timestamps). Formats framework chunk with metadata.",
+      "status": "VERIFIED"
+    },
+    {
+      "req_id": "REQ-ING-07",
+      "description": "Voice stream: store Dr. Sara Hegy spoken dialogue verbatim, 400-700 chars where possible, combine adjacent coach turns, never include client speech",
+      "node": "Format Dual-Stream Chunks",
+      "implementation": "Filters turns strictly on speaker === 'Dr. Sara Hegy'. Client speech excluded. Non-adjacent turns preserved individually. Chunks: 280, 402, 154 chars (SES-101) and 261, 393, 132 chars (SES-102).",
+      "status": "VERIFIED"
+    },
+    {
+      "req_id": "REQ-ING-08",
+      "description": "Embed both streams separately and store in knowledge_vault with 1024-d vectors",
+      "node": "Ollama Chunk Embedder & Validate & Assemble Chunks & Atomic Vault Replacement Function",
+      "implementation": "bge-m3 embeds all 4 chunks sequentially. Validate node verifies 1024 numeric dimensions, speaker identity, and calls ingest_session_vault exactly once.",
+      "status": "VERIFIED"
+    },
+    {
+      "req_id": "REQ-ING-09",
+      "description": "Strict session isolation: no cross-session data leakage and no lost chunks",
+      "node": "Process Sessions Sequentially & Validate & Assemble Chunks",
+      "implementation": "Process Sessions Sequentially isolates each session batch. Chunks and embeddings are matched 1-to-1 without cross-run .all() lookups.",
+      "status": "VERIFIED"
+    },
+    {
+      "req_id": "REQ-ING-10",
+      "description": "Sequential processing and low memory footprint suitable for 8 GB RAM",
+      "node": "All HTTP and Code Nodes",
+      "implementation": "Sequential item execution across Ollama HTTP requests; batchSize 1 on sessions; single-threaded inference on CPU.",
+      "status": "VERIFIED"
+    }
+  ]
+}

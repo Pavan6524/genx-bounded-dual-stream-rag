@@ -1,0 +1,85 @@
+{
+  "stage": "Task 4 \u2014 Candidate Query 1 Similarity Measurement",
+  "query": "How does an executive use Completion with Integrity and binary exit criteria to eliminate micromanagement?",
+  "embedding_model": "bge-m3:latest",
+  "embedding_dimensions": 1024,
+  "embedding_elapsed_sec": 2.259,
+  "framework_threshold": 0.7,
+  "voice_threshold": 0.65,
+  "total_chunks_evaluated": 8,
+  "all_chunks_ranked": [
+    {
+      "id": 30,
+      "session_id": "TEST-SES-101",
+      "stream_type": "framework",
+      "content_preview": "Framework: Completion with Integrity Definition: Look, micro",
+      "similarity": 0.7514
+    },
+    {
+      "id": 32,
+      "session_id": "TEST-SES-101",
+      "stream_type": "voice_sample",
+      "content_preview": "The reality is, top performers don't fail because of capabil",
+      "similarity": 0.6241
+    },
+    {
+      "id": 31,
+      "session_id": "TEST-SES-101",
+      "stream_type": "voice_sample",
+      "content_preview": "Look, Mark, micromanagement is almost never an ego problem. ",
+      "similarity": 0.5348
+    },
+    {
+      "id": 36,
+      "session_id": "TEST-SES-102",
+      "stream_type": "voice_sample",
+      "content_preview": "Has the company's operational velocity outpaced the scope of",
+      "similarity": 0.4493
+    },
+    {
+      "id": 33,
+      "session_id": "TEST-SES-101",
+      "stream_type": "voice_sample",
+      "content_preview": "Exactly. Protect your cognitive bandwidth. Let the architect",
+      "similarity": 0.4198
+    },
+    {
+      "id": 37,
+      "session_id": "TEST-SES-102",
+      "stream_type": "voice_sample",
+      "content_preview": "When you regulate your own state first, you give them the sa",
+      "similarity": 0.3903
+    },
+    {
+      "id": 35,
+      "session_id": "TEST-SES-102",
+      "stream_type": "voice_sample",
+      "content_preview": "The reality is that top performers don't decay overnight wit",
+      "similarity": 0.3801
+    },
+    {
+      "id": 34,
+      "session_id": "TEST-SES-102",
+      "stream_type": "framework",
+      "content_preview": "Framework: Table and Shoulder Test Definition: Isolate two d",
+      "similarity": 0.376
+    }
+  ],
+  "top_framework_chunk": {
+    "id": 30,
+    "session_id": "TEST-SES-101",
+    "stream_type": "framework",
+    "content_preview": "Framework: Completion with Integrity Definition: Look, micro",
+    "similarity": 0.7514
+  },
+  "top_framework_qualifies": true,
+  "top_voice_chunk": {
+    "id": 32,
+    "session_id": "TEST-SES-101",
+    "stream_type": "voice_sample",
+    "content_preview": "The reality is, top performers don't fail because of capabil",
+    "similarity": 0.6241
+  },
+  "top_voice_qualifies": false,
+  "overall_gating_status": "QUALIFIES_FOR_POSITIVE_RETRIEVAL"
+}

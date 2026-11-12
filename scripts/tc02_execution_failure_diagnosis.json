@@ -1,0 +1,28 @@
+{
+  "stage": "Stage 6.2C \u2014 TC-02 Execution Diagnostic Report",
+  "status": "FAILED",
+  "return_code": 1,
+  "duration_seconds": 14.76,
+  "target_workflow_id": "TSvKBGpM9nK7eb3U",
+  "query": "How do I practice Completion with Integrity when closing projects?",
+  "stderr_summary": "[BRIDGE] Successfully hooked WorkflowRunner for 'TSvKBGpM9nK7eb3U'\n[BRIDGE] Injected pinData for trigger 'When clicking \u2018Execute workflow\u2019': query=\"How do I practice Completion with Integrity when closing projects?\"",
+  "stdout_saved": "scripts/tc02_raw_stdout.log",
+  "stderr_saved": "scripts/tc02_raw_stderr.log",
+  "trace_saved": "scripts/tc02_execution_result.json",
+  "n8n_error_details": {
+    "execution_id": null,
+    "executed_nodes": [
+      "When clicking \u2018Execute workflow\u2019",
+      "Query Input & Normalizer",
+      "Greeting Classifier",
+      "Greeting Router",
+      "Ollama Query Embedder"
+    ],
+    "last_executed_node": "Ollama Query Embedder",
+    "error_message": "The value in the \"JSON Body\" field is not valid JSON",
+    "error_name": "NodeOperationError",
+    "error_description": "Unexpected token '$', ...\"\"prompt\": $json.quer\"... is not valid JSON",
+    "error_node": "Ollama Query Embedder",
+    "error_stack": "NodeOperationError: The value in the \"JSON Body\" field is not valid JSON\n    at parseJsonParameter (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-nodes-base@file++++home+runner+_work+n8n+n8n+packages+nodes-base/node_modules/n8n-nodes-base/nodes/HttpRequest/V3/HttpRequestV3.node.ts:1233:9)\n    at ExecuteContext.execute (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-nodes-base@file++++home+runner+_work+n8n+n8n+packages+nodes-base/node_modules/n8n-nodes-base/nodes/HttpRequest/V3/HttpRequestV3.node.ts:450:30)\n    at WorkflowExecute.executeNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file++++home+runner+_work+n8n+n8n+packages+core/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1158:31)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at WorkflowExecute.runNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file++++home+runner+_work+n8n+n8n+packages+core/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1460:11)\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file++++home+runner+_work+n8n+n8n+packages+core/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:2419:27\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file++++home+runner+_work+n8n+n8n+packages+core/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:2900:11"
+  }
+}

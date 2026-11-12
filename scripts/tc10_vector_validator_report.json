@@ -1,0 +1,59 @@
+{
+  "test_id": "TC-10",
+  "name": "Invalid Embedding Vector Rejection Unit Test",
+  "timestamp": "2026-11-12T15:22:13.269Z",
+  "extracted_source_node": "Validate Query Vector (workflows/gated_retrieval.json)",
+  "isolation_safety": {
+    "database_access": "NONE",
+    "ollama_access": "NONE",
+    "n8n_activation": "NONE"
+  },
+  "total_cases": 6,
+  "passed_cases": 6,
+  "failed_cases": 0,
+  "test_cases": [
+    {
+      "case_id": "TC10-1",
+      "name": "Missing Embedding",
+      "expected": "ERROR",
+      "actual": "CAUGHT: Ollama embedding service failed: vector is missing or not an array.",
+      "pass": true
+    },
+    {
+      "case_id": "TC10-2",
+      "name": "Non-array Embedding",
+      "expected": "ERROR",
+      "actual": "CAUGHT: Ollama embedding service failed: vector is missing or not an array.",
+      "pass": true
+    },
+    {
+      "case_id": "TC10-3",
+      "name": "Incorrect Dimensions (512)",
+      "expected": "ERROR",
+      "actual": "CAUGHT: Embedding vector validation failed: dimension is 512, expected 1024.",
+      "pass": true
+    },
+    {
+      "case_id": "TC10-4",
+      "name": "NaN Value at Index 42",
+      "expected": "ERROR",
+      "actual": "CAUGHT: Embedding vector validation failed: element at index 42 is non-numeric or non-finite (NaN).",
+      "pass": true
+    },
+    {
+      "case_id": "TC10-5",
+      "name": "Infinity Value at Index 100",
+      "expected": "ERROR",
+      "actual": "CAUGHT: Embedding vector validation failed: element at index 100 is non-numeric or non-finite (Infinity).",
+      "pass": true
+    },
+    {
+      "case_id": "TC10-6",
+      "name": "Valid 1024-d Float Vector",
+      "expected": "PASS",
+      "actual": "PRODUCED: dimension=1024, vector_str_len=21112",
+      "pass": true
+    }
+  ],
+  "overall_status": "PASS"
+}

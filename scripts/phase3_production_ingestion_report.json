@@ -1,0 +1,330 @@
+{
+  "timestamp": "2026-11-12T19:02:06.603Z",
+  "workflow_id": "IlBw4RRELuh02Akm",
+  "status": "SUCCESS",
+  "execution_mode": "n8n execute CLI",
+  "duration_ms": 147414,
+  "knowledge_vault": {
+    "total_count": 16,
+    "test_baseline_count": 8,
+    "production_count": 8,
+    "records": [
+      {
+        "id": 30,
+        "session_id": "TEST-SES-101",
+        "stream_type": "framework",
+        "dims": 1024,
+        "content_len": 850,
+        "metadata": {
+          "session_id": "TEST-SES-101",
+          "framework_name": "Completion with Integrity",
+          "source_timestamps": [
+            "00:01:55",
+            "00:44:10",
+            "00:44:40"
+          ]
+        }
+      },
+      {
+        "id": 31,
+        "session_id": "TEST-SES-101",
+        "stream_type": "voice_sample",
+        "dims": 1024,
+        "content_len": 280,
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "char_count": 280,
+          "session_id": "TEST-SES-101",
+          "turn_count": 1,
+          "source_timestamps": [
+            "00:00:45"
+          ]
+        }
+      },
+      {
+        "id": 32,
+        "session_id": "TEST-SES-101",
+        "stream_type": "voice_sample",
+        "dims": 1024,
+        "content_len": 402,
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "char_count": 402,
+          "session_id": "TEST-SES-101",
+          "turn_count": 1,
+          "source_timestamps": [
+            "00:01:55"
+          ]
+        }
+      },
+      {
+        "id": 33,
+        "session_id": "TEST-SES-101",
+        "stream_type": "voice_sample",
+        "dims": 1024,
+        "content_len": 154,
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "char_count": 154,
+          "session_id": "TEST-SES-101",
+          "turn_count": 1,
+          "source_timestamps": [
+            "00:44:40"
+          ]
+        }
+      },
+      {
+        "id": 34,
+        "session_id": "TEST-SES-102",
+        "stream_type": "framework",
+        "dims": 1024,
+        "content_len": 223,
+        "metadata": {
+          "session_id": "TEST-SES-102",
+          "framework_name": "Table and Shoulder Test",
+          "source_timestamps": [
+            "00:00:55",
+            "00:02:00"
+          ]
+        }
+      },
+      {
+        "id": 35,
+        "session_id": "TEST-SES-102",
+        "stream_type": "voice_sample",
+        "dims": 1024,
+        "content_len": 261,
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "char_count": 261,
+          "session_id": "TEST-SES-102",
+          "turn_count": 1,
+          "source_timestamps": [
+            "00:00:55"
+          ]
+        }
+      },
+      {
+        "id": 36,
+        "session_id": "TEST-SES-102",
+        "stream_type": "voice_sample",
+        "dims": 1024,
+        "content_len": 393,
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "char_count": 393,
+          "session_id": "TEST-SES-102",
+          "turn_count": 1,
+          "source_timestamps": [
+            "00:02:00"
+          ]
+        }
+      },
+      {
+        "id": 37,
+        "session_id": "TEST-SES-102",
+        "stream_type": "voice_sample",
+        "dims": 1024,
+        "content_len": 132,
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "char_count": 132,
+          "session_id": "TEST-SES-102",
+          "turn_count": 1,
+          "source_timestamps": [
+            "00:42:45"
+          ]
+        }
+      },
+      {
+        "id": 40,
+        "session_id": "SES-101",
+        "stream_type": "framework",
+        "dims": 1024,
+        "content_len": 288,
+        "metadata": {
+          "session_id": "SES-101",
+          "framework_name": "Completion with Integrity",
+          "source_timestamps": [
+            "00:00:45"
+          ]
+        }
+      },
+      {
+        "id": 41,
+        "session_id": "SES-101",
+        "stream_type": "voice_sample",
+        "dims": 1024,
+        "content_len": 280,
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "char_count": 280,
+          "session_id": "SES-101",
+          "turn_count": 1,
+          "source_timestamps": [
+            "00:00:45"
+          ]
+        }
+      },
+      {
+        "id": 42,
+        "session_id": "SES-101",
+        "stream_type": "voice_sample",
+        "dims": 1024,
+        "content_len": 402,
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "char_count": 402,
+          "session_id": "SES-101",
+          "turn_count": 1,
+          "source_timestamps": [
+            "00:01:55"
+          ]
+        }
+      },
+      {
+        "id": 43,
+        "session_id": "SES-101",
+        "stream_type": "voice_sample",
+        "dims": 1024,
+        "content_len": 154,
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "char_count": 154,
+          "session_id": "SES-101",
+          "turn_count": 1,
+          "source_timestamps": [
+            "00:44:40"
+          ]
+        }
+      },
+      {
+        "id": 44,
+        "session_id": "SES-102",
+        "stream_type": "framework",
+        "dims": 1024,
+        "content_len": 192,
+        "metadata": {
+          "session_id": "SES-102",
+          "framework_name": "Completion with Integrity",
+          "source_timestamps": [
+            "00:00:45"
+          ]
+        }
+      },
+      {
+        "id": 45,
+        "session_id": "SES-102",
+        "stream_type": "voice_sample",
+        "dims": 1024,
+        "content_len": 261,
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "char_count": 261,
+          "session_id": "SES-102",
+          "turn_count": 1,
+          "source_timestamps": [
+            "00:00:55"
+          ]
+        }
+      },
+      {
+        "id": 46,
+        "session_id": "SES-102",
+        "stream_type": "voice_sample",
+        "dims": 1024,
+        "content_len": 393,
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "char_count": 393,
+          "session_id": "SES-102",
+          "turn_count": 1,
+          "source_timestamps": [
+            "00:02:00"
+          ]
+        }
+      },
+      {
+        "id": 47,
+        "session_id": "SES-102",
+        "stream_type": "voice_sample",
+        "dims": 1024,
+        "content_len": 132,
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "char_count": 132,
+          "session_id": "SES-102",
+          "turn_count": 1,
+          "source_timestamps": [
+            "00:42:45"
+          ]
+        }
+      }
+    ]
+  },
+  "rejected_meetings": {
+    "total_count": 4,
+    "test_baseline_count": 2,
+    "production_count": 2,
+    "records": [
+      {
+        "id": 10,
+        "session_id": "TEST-SES-103",
+        "meeting_type": "Internal Operations",
+        "rejection_reason": "Non-coaching meeting type: Internal Operations",
+        "confidence_score": 1
+      },
+      {
+        "id": 11,
+        "session_id": "TEST-SES-104",
+        "meeting_type": "Sales Discovery",
+        "rejection_reason": "Non-coaching meeting type: Sales Discovery",
+        "confidence_score": 0.95
+      },
+      {
+        "id": 12,
+        "session_id": "SES-103",
+        "meeting_type": "Internal Operations",
+        "rejection_reason": "Non-coaching meeting type: Internal Operations",
+        "confidence_score": 1
+      },
+      {
+        "id": 13,
+        "session_id": "SES-104",
+        "meeting_type": "Sales Discovery",
+        "rejection_reason": "Non-coaching meeting type: Sales Discovery",
+        "confidence_score": 0.95
+      }
+    ]
+  },
+  "session_breakdown": {
+    "SES-101": {
+      "status": "accepted",
+      "classification": "Client Coaching",
+      "framework_chunks": 1,
+      "voice_samples": 3,
+      "total_embeddings": 4
+    },
+    "SES-102": {
+      "status": "accepted",
+      "classification": "Client Coaching",
+      "framework_chunks": 1,
+      "voice_samples": 3,
+      "total_embeddings": 4
+    },
+    "SES-103": {
+      "status": "rejected",
+      "classification": "Internal Operations",
+      "rejection_reason": "Non-coaching meeting type: Internal Operations",
+      "confidence_score": 1,
+      "total_embeddings": 0
+    },
+    "SES-104": {
+      "status": "rejected",
+      "classification": "Sales Discovery",
+      "rejection_reason": "Non-coaching meeting type: Sales Discovery",
+      "confidence_score": 0.95,
+      "total_embeddings": 0
+    }
+  }
+}

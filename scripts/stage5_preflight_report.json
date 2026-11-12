@@ -1,0 +1,83 @@
+{
+  "status": "PASS",
+  "inspection_timestamp": "2026-11-12T15:53:00Z",
+  "accepted_sessions_vault_plan": {
+    "target_table": "knowledge_vault",
+    "target_function": "ingest_test_session_vault(p_session_id, p_chunks::jsonb)",
+    "total_sessions": 2,
+    "session_ids": [
+      "TEST-SES-101",
+      "TEST-SES-102"
+    ],
+    "total_records": 8,
+    "records_by_stream": {
+      "framework": 2,
+      "voice_sample": 6
+    },
+    "records_by_session": {
+      "TEST-SES-101": {
+        "framework": 1,
+        "voice_sample": 3,
+        "total": 4
+      },
+      "TEST-SES-102": {
+        "framework": 1,
+        "voice_sample": 3,
+        "total": 4
+      }
+    },
+    "vector_dimension": 1024,
+    "numeric_validity": "100% finite float (zero null, NaN, or Inf)",
+    "atomic_replacement_mechanism": "DELETE prior session records + INSERT in single transaction with advisory xact lock"
+  },
+  "rejected_sessions_archive_plan": {
+    "target_table": "rejected_meetings",
+    "target_function": "archive_rejected_test_meeting(p_session_id, p_meeting_type, p_confidence_score, p_summary, p_raw_transcript, p_rejection_reason)",
+    "total_sessions": 2,
+    "session_ids": [
+      "TEST-SES-103",
+      "TEST-SES-104"
+    ],
+    "sessions": [
+      {
+        "session_id": "TEST-SES-103",
+        "meeting_type": "Internal Operations",
+        "confidence_score": 1.0,
+        "summary": "Discussed webhook timeout on Airtable synchronization node and PostgreSQL database migration with Youssef.",
+        "raw_transcript_len": 761,
+        "rejection_reason": "Non-coaching meeting type: Internal Operations",
+        "sql_call": "SELECT * FROM archive_rejected_test_meeting('TEST-SES-103', 'Internal Operations', 1.0, ...);"
+      },
+      {
+        "session_id": "TEST-SES-104",
+        "meeting_type": "Sales Discovery",
+        "confidence_score": 0.95,
+        "summary": "A sales representative from GenX Leadership Academy discusses their retainer pricing and minimum contract terms with a classification expert.",
+        "raw_transcript_len": 922,
+        "rejection_reason": "Non-coaching meeting type: Sales Discovery",
+        "sql_call": "SELECT * FROM archive_rejected_test_meeting('TEST-SES-104', 'Sales Discovery', 0.95, ...);"
+      }
+    ],
+    "has_embedding_column": false,
+    "atomic_replacement_mechanism": "DELETE prior session records + INSERT in single transaction with advisory xact lock"
+  },
+  "rejection_isolation_verification": {
+    "verified": true,
+    "excluded_from_vault": [
+      "TEST-SES-103",
+      "TEST-SES-104"
+    ],
+    "excluded_from_embeddings": [
+      "TEST-SES-103",
+      "TEST-SES-104"
+    ]
+  },
+  "database_mutations_executed": {
+    "inserts": 0,
+    "updates": 0,
+    "deletes": 0,
+    "truncate": 0,
+    "function_calls": 0,
+    "confirmation": "Zero database writes occurred during preflight"
+  }
+}

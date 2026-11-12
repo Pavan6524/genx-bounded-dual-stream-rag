@@ -1,0 +1,72 @@
+[
+  {
+    "test_case": "TC-03",
+    "query": "Look, Mark, is micromanagement really an ego problem or an information architecture breakdown?",
+    "framework_similarity": 0.6991,
+    "framework_chunk_id": 30,
+    "framework_qualifies": false,
+    "voice_similarity": 0.8374,
+    "voice_chunk_id": 31,
+    "voice_qualifies": true
+  },
+  {
+    "test_case": "TC-03",
+    "query": "How do top performers fail against ambiguous standards in our practice?",
+    "framework_similarity": 0.5049,
+    "framework_chunk_id": 30,
+    "framework_qualifies": false,
+    "voice_similarity": 0.688,
+    "voice_chunk_id": 32,
+    "voice_qualifies": true
+  },
+  {
+    "test_case": "TC-04",
+    "query": "How does an executive use the Table and Shoulder test when operational velocity outpaces direct reports?",
+    "framework_similarity": 0.6178,
+    "framework_chunk_id": 34,
+    "framework_qualifies": false,
+    "voice_similarity": 0.6342,
+    "voice_chunk_id": 35,
+    "voice_qualifies": false
+  },
+  {
+    "test_case": "TC-04",
+    "query": "How do top performers use the Completion with Integrity framework and binary exit criteria to eliminate micromanagement?",
+    "framework_similarity": 0.7666,
+    "framework_chunk_id": 30,
+    "framework_qualifies": true,
+    "voice_similarity": 0.685,
+    "voice_chunk_id": 32,
+    "voice_qualifies": true
+  },
+  {
+    "test_case": "TC-06",
+    "query": "How does an executive protect cognitive bandwidth and let the architecture absorb ambiguity?",
+    "framework_similarity": 0.4752,
+    "framework_chunk_id": 30,
+    "framework_qualifies": false,
+    "voice_similarity": 0.6685,
+    "voice_chunk_id": 33,
+    "voice_qualifies": true
+  },
+  {
+    "test_case": "TC-06",
+    "query": "When you regulate your own state first, how do you give your team the safety to stabilize theirs?",
+    "framework_similarity": 0.4205,
+    "framework_chunk_id": 30,
+    "framework_qualifies": false,
+    "voice_similarity": 0.7172,
+    "voice_chunk_id": 37,
+    "voice_qualifies": true
+  },
+  {
+    "test_case": "TC-07",
+    "query": "What is the optimal fertilizer ratio for growing hydroponic tomatoes in winter?",
+    "framework_similarity": 0.2365,
+    "framework_chunk_id": 30,
+    "framework_qualifies": false,
+    "voice_similarity": 0.2752,
+    "voice_chunk_id": 35,
+    "voice_qualifies": false
+  }
+]

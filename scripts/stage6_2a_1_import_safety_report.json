@@ -1,0 +1,96 @@
+{
+  "stage": "Stage 6.2A.1 — Import Script Safety Audit & Correction",
+  "audit_timestamp": "2026-11-12T17:37:00Z",
+  "import_executed": false,
+  "status": "SAFE_FOR_USER_AUTHORIZATION",
+  "import_script_inspection": {
+    "script_path": "scripts/import_retrieval_workflow.py",
+    "backup_of_script_created": "scripts/backups/import_retrieval_workflow_pre_safety_fix_20261112_173500.py",
+    "defects_identified": [
+      "Original script lacked pre-import backup existence verification.",
+      "Original script lacked duplicate workflow detection prior to calling import.",
+      "Original script relied on default n8n active state rather than passing explicit --activeState=false.",
+      "Original script lacked deep post-import comparison (only checked for presence of workflow name in list).",
+      "Original script lacked execution guard (could run if invoked without parameters)."
+    ],
+    "corrections_applied": [
+      "Added check_preconditions() verifying local file integrity, pre-import backup presence, and live ingestion workflow health.",
+      "Added duplicate detection: warns if 'Bounded Dual-Stream Gated Retrieval' is already present and prevents duplicate workflow creation.",
+      "Added explicit '--activeState=false' argument to CLI import command.",
+      "Added comprehensive verify_and_compare() matching all 16 node IDs, names, types, typeVersions, parameters, connections, SQL thresholds, credentials, endpoints, and fallback text against local source.",
+      "Added execution guard requiring explicit '--execute' flag, allowing safe dry-run inspection via '--check-only'."
+    ]
+  },
+  "backup_verification": {
+    "backup_verified": true,
+    "backup_path": "workflows/backups/n8n_state_backup_pre_stage6_2a_20261112_173037.json",
+    "timestamp": "20261112_173037",
+    "workflow_count_in_backup": 1,
+    "ingestion_workflow_present": true,
+    "ingestion_workflow_id": "IlBw4RRELuh02Akm",
+    "ingestion_workflow_node_count": 21,
+    "backup_overwrites_prevented": true,
+    "credentials_exposed": false
+  },
+  "target_project_verification": {
+    "target_project_id": "w24y2iBD8xkaEi8K",
+    "project_name": "Pavan Guduru <pavang6524@gmail.com>",
+    "project_type": "personal",
+    "verified_against": "Live workflow shared metadata (IlBw4RRELuh02Akm)"
+  },
+  "workflow_id_collision_check": {
+    "collision_risk": "NONE",
+    "local_workflow_id": null,
+    "source_file": "workflows/gated_retrieval.json",
+    "mechanism": "Local file omits top-level 'id' property. n8n CLI generates a new unique workflow ID upon import, guaranteeing existing ingestion workflow (IlBw4RRELuh02Akm) cannot be overwritten."
+  },
+  "import_command_and_arguments": {
+    "binary": "docker exec genx-n8n n8n import:workflow",
+    "arguments": [
+      "--input=/workflows/gated_retrieval.json",
+      "--projectId=w24y2iBD8xkaEi8K",
+      "--activeState=false"
+    ],
+    "supported_by_cli": true
+  },
+  "activation_and_execution_safety": {
+    "explicit_inactivation": true,
+    "activeState_flag": "--activeState=false",
+    "post_import_active_check": "assert live_export.get('active') is False",
+    "workflow_execution_prevented": true,
+    "database_mutations_prevented": true
+  },
+  "post_import_comparison_strategy": {
+    "export_command": "docker exec genx-n8n n8n export:workflow --id=<imported_id>",
+    "local_export_destination": "workflows/live_exported_retrieval_wf.json",
+    "comparison_checks": [
+      "All 16 nodes present and identical",
+      "Node IDs and names match exactly",
+      "Node types and versions match exactly",
+      "Connections match exactly",
+      "SQL query, thresholds (>= 0.70, >= 0.65), and LIMIT 2 verified",
+      "PostgreSQL credential reference verified as 'Postgres account'",
+      "Ollama endpoint expressions verified ($env.OLLAMA_BASE_URL)",
+      "Greeting branch verified terminal with zero database/LLM calls",
+      "Zero-result branch verified terminal with exact fallback text",
+      "Zero credentials exposed in comparison output"
+    ]
+  },
+  "files_inspected": [
+    "scripts/import_retrieval_workflow.py",
+    "scripts/backup_n8n_state.py",
+    "scripts/check_workflow_meta.py",
+    "scripts/inspect_n8n_workflows.py",
+    "workflows/gated_retrieval.json",
+    "scripts/stage6_1_audit_report.json",
+    "workflows/backups/n8n_state_backup_pre_stage6_2a_20261112_173037.json"
+  ],
+  "files_modified": [
+    "scripts/import_retrieval_workflow.py",
+    "scripts/backups/import_retrieval_workflow_pre_safety_fix_20261112_173500.py",
+    "scripts/stage6_2a_1_import_safety_report.json"
+  ],
+  "outstanding_blockers": [],
+  "safe_to_authorize": true,
+  "confirmation_import_not_executed": "CONFIRMED: Neither scripts/import_retrieval_workflow.py nor any n8n workflow import command was executed. Live n8n instance and database remain 100% in their pre-import state."
+}

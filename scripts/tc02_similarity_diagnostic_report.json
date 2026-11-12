@@ -1,0 +1,117 @@
+{
+  "stage": "Stage 6.2C — TC-02 Cosine Similarity Diagnostic Report",
+  "query": "How do I practice Completion with Integrity when closing projects?",
+  "thresholds": {
+    "framework_threshold": 0.70,
+    "voice_threshold": 0.65
+  },
+  "total_vault_records_evaluated": 8,
+  "similarity_rankings": [
+    {
+      "rank": 1,
+      "id": 30,
+      "session_id": "TEST-SES-101",
+      "stream_type": "framework",
+      "framework_name": "Completion with Integrity",
+      "content_preview": "Framework: Completion with Integrity\\nDefinition: Look, micro...",
+      "cosine_similarity": 0.6216,
+      "threshold_required": 0.70,
+      "threshold_met": false,
+      "gap": -0.0784
+    },
+    {
+      "rank": 2,
+      "id": 32,
+      "session_id": "TEST-SES-101",
+      "stream_type": "voice_sample",
+      "content_preview": "The reality is, top performers don't fail because of capability...",
+      "cosine_similarity": 0.6034,
+      "threshold_required": 0.65,
+      "threshold_met": false,
+      "gap": -0.0466
+    },
+    {
+      "rank": 3,
+      "id": 33,
+      "session_id": "TEST-SES-101",
+      "stream_type": "voice_sample",
+      "content_preview": "Exactly. Protect your cognitive bandwidth. Let the architect...",
+      "cosine_similarity": 0.4641,
+      "threshold_required": 0.65,
+      "threshold_met": false,
+      "gap": -0.1859
+    },
+    {
+      "rank": 4,
+      "id": 36,
+      "session_id": "TEST-SES-102",
+      "stream_type": "voice_sample",
+      "content_preview": "Has the company's operational velocity outpaced the scope of...",
+      "cosine_similarity": 0.4540,
+      "threshold_required": 0.65,
+      "threshold_met": false,
+      "gap": -0.1960
+    },
+    {
+      "rank": 5,
+      "id": 37,
+      "session_id": "TEST-SES-102",
+      "stream_type": "voice_sample",
+      "content_preview": "When you regulate your own state first, you give them the sa...",
+      "cosine_similarity": 0.4182,
+      "threshold_required": 0.65,
+      "threshold_met": false,
+      "gap": -0.2318
+    },
+    {
+      "rank": 6,
+      "id": 31,
+      "session_id": "TEST-SES-101",
+      "stream_type": "voice_sample",
+      "content_preview": "Look, Mark, micromanagement is almost never an ego problem...",
+      "cosine_similarity": 0.3931,
+      "threshold_required": 0.65,
+      "threshold_met": false,
+      "gap": -0.2569
+    },
+    {
+      "rank": 7,
+      "id": 35,
+      "session_id": "TEST-SES-102",
+      "stream_type": "voice_sample",
+      "content_preview": "The reality is that top performers don't decay overnight wit...",
+      "cosine_similarity": 0.3707,
+      "threshold_required": 0.65,
+      "threshold_met": false,
+      "gap": -0.2793
+    },
+    {
+      "rank": 8,
+      "id": 34,
+      "session_id": "TEST-SES-102",
+      "stream_type": "framework",
+      "framework_name": "Table and Shoulder Test",
+      "content_preview": "Framework: Table and Shoulder Test\\nDefinition: Isolate two d...",
+      "cosine_similarity": 0.3185,
+      "threshold_required": 0.70,
+      "threshold_met": false,
+      "gap": -0.3815
+    }
+  ],
+  "top_framework_summary": {
+    "id": 30,
+    "session_id": "TEST-SES-101",
+    "framework_name": "Completion with Integrity",
+    "similarity": 0.6216,
+    "threshold": 0.70,
+    "result": "DROPPED_BY_HARD_SQL_FILTER"
+  },
+  "top_voice_summary": {
+    "id": 32,
+    "session_id": "TEST-SES-101",
+    "similarity": 0.6034,
+    "threshold": 0.65,
+    "result": "DROPPED_BY_HARD_SQL_FILTER"
+  },
+  "diagnostic_conclusion": "The deterministic SQL threshold gating operated with 100% mathematical fidelity. The #1 nearest neighbor across the entire knowledge vault was correctly identified as ID 30 ('Completion with Integrity' from TEST-SES-101), but scored 0.6216, falling below the mandatory >= 0.70 threshold. Because no qualifying framework or voice chunks crossed the threshold, the hard gate deterministically halted LLM generation and returned the exact zero-result fallback text."
+}

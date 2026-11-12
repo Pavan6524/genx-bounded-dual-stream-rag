@@ -1,0 +1,48 @@
+{
+  "test_id": "TC-08",
+  "verification_phase": "Phase 2 — TC-08 Static Threshold & Parameter Binding Verification",
+  "workflow_id": "TSvKBGpM9nK7eb3U",
+  "workflow_file": "workflows/gated_retrieval.json",
+  "timestamp": "2026-11-12T20:51:50Z",
+  "verification_category": "STATIC_ONLY",
+  "framework_stream_audit": {
+    "node_name": "Retrieve Framework Stream",
+    "node_type": "n8n-nodes-base.postgres",
+    "operation": "executeQuery",
+    "sql_statement": "SELECT \n    id,\n    session_id,\n    stream_type,\n    content,\n    metadata,\n    ROUND((1 - (embedding <=> $1::vector))::numeric, 4) AS similarity\nFROM knowledge_vault\nWHERE stream_type = 'framework'\n  AND 1 - (embedding <=> $1::vector) >= 0.70\nORDER BY (embedding <=> $1::vector) ASC\nLIMIT 2;",
+    "similarity_threshold": 0.70,
+    "limit": 2,
+    "ordering": "(embedding <=> $1::vector) ASC (equivalent to similarity DESC)",
+    "stream_filter": "stream_type = 'framework'",
+    "parameter_binding": {
+      "placeholder": "$1::vector",
+      "query_replacement_expression": "={{ $('Validate Query Vector').first().json.query_vector_str }}",
+      "parameterized_mode": true,
+      "sql_injection_safe": true
+    }
+  },
+  "voice_stream_audit": {
+    "node_name": "Retrieve Voice Stream",
+    "node_type": "n8n-nodes-base.postgres",
+    "operation": "executeQuery",
+    "sql_statement": "SELECT \n    id,\n    session_id,\n    stream_type,\n    content,\n    metadata,\n    ROUND((1 - (embedding <=> $1::vector))::numeric, 4) AS similarity\nFROM knowledge_vault\nWHERE stream_type = 'voice_sample'\n  AND 1 - (embedding <=> $1::vector) >= 0.65\nORDER BY (embedding <=> $1::vector) ASC\nLIMIT 2;",
+    "similarity_threshold": 0.65,
+    "limit": 2,
+    "ordering": "(embedding <=> $1::vector) ASC (equivalent to similarity DESC)",
+    "stream_filter": "stream_type = 'voice_sample'",
+    "parameter_binding": {
+      "placeholder": "$1::vector",
+      "query_replacement_expression": "={{ $('Validate Query Vector').first().json.query_vector_str }}",
+      "parameterized_mode": true,
+      "sql_injection_safe": true
+    }
+  },
+  "architectural_checks": {
+    "pgvector_operator": "Valid cosine distance operator '<=>' used correctly in formula '1 - (embedding <=> $1::vector)'",
+    "stream_isolation": "Strict equality filter on 'stream_type' guarantees zero cross-stream leakage",
+    "read_only_safety": "Pure SELECT queries; zero INSERT, UPDATE, DELETE, or ALTER operations",
+    "no_raw_interpolation": "Expressions pass parameters through n8n's queryReplacement array; no direct string concatenation in SQL body",
+    "runtime_claim_disclaimer": "This report documents 100% static proof of the SQL query definitions. Runtime exclusion of sub-threshold records requires execution trace verification."
+  },
+  "static_verification_status": "PASS"
+}

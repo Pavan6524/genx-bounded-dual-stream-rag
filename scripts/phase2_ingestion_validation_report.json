@@ -1,0 +1,98 @@
+{
+  "timestamp": "2026-11-12T23:49:00Z",
+  "workflow_id": "IlBw4RRELuh02Akm",
+  "workflow_name": "Ingestion Firewall & Dual-Stream Extraction",
+  "workflow_path": "workflows/ingestion_firewall.json",
+  "workflow_sha256": "4b68ef508bbdfc67ee2764b8bb26c310469b76eb1c7e96b79c6d3bcce47cffab",
+  "active_state": false,
+  "node_count": 15,
+  "connection_count": 15,
+  "validation_checks": {
+    "json_schema": {
+      "status": "PASS",
+      "details": "Canonical workflow is valid JSON with 15 nodes and 15 connection pairs."
+    },
+    "workflow_active_state": {
+      "status": "PASS",
+      "details": "active is set to false in canonical JSON and verified active: 0 in live n8n SQLite database."
+    },
+    "javascript_syntax": {
+      "status": "PASS",
+      "validated_nodes": [
+        "Parse Transcripts Array",
+        "Turn Sampler",
+        "Validate Classification",
+        "Format Rejected Record",
+        "Format Dual-Stream Chunks",
+        "Validate & Assemble Chunks"
+      ],
+      "errors": 0
+    },
+    "connection_references": {
+      "status": "PASS",
+      "details": "All 15 connection source and target nodes exist in the workflow nodes array."
+    },
+    "cross_run_lookups_audit": {
+      "status": "PASS",
+      "details": "Zero occurrences of $('...').all() or cross-node $('...').first() lookups. All node data is passed through wire via $input or scoped via $('Process Sessions Sequentially').item.json."
+    },
+    "rejection_routing": {
+      "status": "PASS",
+      "details": "Firewall Gate false branch routes to Format Rejected Record -> Transactional Archive Rejected -> loops to Process Sessions Sequentially. Embedder and vault insertion are completely bypassed."
+    },
+    "acceptance_routing": {
+      "status": "PASS",
+      "details": "Firewall Gate true branch routes to Ollama Framework Extractor -> Format Dual-Stream Chunks -> Ollama Chunk Embedder -> Validate & Assemble Chunks -> Atomic Vault Replacement Function -> loops to Process Sessions Sequentially."
+    },
+    "database_mutation_guard": {
+      "status": "PASS",
+      "details": "Empirical check on genx-postgres verified 8 knowledge_vault rows (100% TEST-) and 2 rejected_meetings rows (100% TEST-). Zero mutations occurred during Phase 2."
+    }
+  },
+  "session_contracts": {
+    "SES-101": {
+      "expected_status": "ACCEPTED",
+      "meeting_type": "Client Coaching",
+      "confidence_threshold": ">= 0.80",
+      "framework_chunks": 1,
+      "voice_chunks": 3,
+      "total_chunks": 4,
+      "voice_lengths": [280, 402, 154],
+      "db_function": "ingest_session_vault",
+      "db_invocations": 1
+    },
+    "SES-102": {
+      "expected_status": "ACCEPTED",
+      "meeting_type": "Client Coaching",
+      "confidence_threshold": ">= 0.80",
+      "framework_chunks": 1,
+      "voice_chunks": 3,
+      "total_chunks": 4,
+      "voice_lengths": [261, 393, 132],
+      "db_function": "ingest_session_vault",
+      "db_invocations": 1
+    },
+    "SES-103": {
+      "expected_status": "REJECTED",
+      "meeting_type": "Internal Operations",
+      "confidence_score": 1.0,
+      "rejection_reason": "Non-coaching meeting type: Internal Operations",
+      "framework_chunks": 0,
+      "voice_chunks": 0,
+      "total_chunks": 0,
+      "db_function": "archive_rejected_meeting",
+      "db_invocations": 1
+    },
+    "SES-104": {
+      "expected_status": "REJECTED",
+      "meeting_type": "Sales Discovery",
+      "confidence_score": 0.95,
+      "rejection_reason": "Non-coaching meeting type: Sales Discovery",
+      "framework_chunks": 0,
+      "voice_chunks": 0,
+      "total_chunks": 0,
+      "db_function": "archive_rejected_meeting",
+      "db_invocations": 1
+    }
+  }
+}

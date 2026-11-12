@@ -1,0 +1,35 @@
+{
+  "phase": "Phase 2 — Ingestion Workflow Import Verification",
+  "timestamp": "2026-11-12T16:50:54.966Z",
+  "verification_passed": true,
+  "workflow_inventory": {
+    "total_workflows": 2,
+    "exactly_one_ingestion_workflow": true,
+    "ingestion_workflow_id": "IlBw4RRELuh02Akm",
+    "ingestion_workflow_name": "Ingestion Firewall & Dual-Stream Extraction",
+    "ingestion_project_id": "w24y2iBD8xkaEi8K",
+    "ingestion_active_state": false,
+    "retrieval_workflow_id": "TSvKBGpM9nK7eb3U",
+    "retrieval_active_state": false
+  },
+  "workflow_nodes": {
+    "live_node_count": 21,
+    "canonical_node_count": 21,
+    "node_count_matches": true
+  },
+  "javascript_validation": {
+    "syntax_valid": true,
+    "has_test_guard": false,
+    "validates_session_id": true
+  },
+  "configuration_alignment": {
+    "input_path": "/data/mock_transcripts.json",
+    "input_path_correct": true,
+    "vault_sql_function": "SELECT * FROM ingest_session_vault($1, $2::jsonb);",
+    "vault_sql_correct": true,
+    "rejection_sql_function": "SELECT * FROM archive_rejected_meeting($1, $2, $3, $4, $5, $6);",
+    "rejection_sql_correct": true,
+    "postgres_cred_id": "NIeKz7GoX1wU6irq",
+    "postgres_cred_correct": true
+  }
+}

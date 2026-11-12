@@ -1,0 +1,134 @@
+[
+  {
+    "session_id": "TEST-SES-101",
+    "status": "EXTRACTED",
+    "raw_model_response": "{\n  \"frameworks\": [\n    {\n      \"name\": \"Completion with Integrity\",\n      \"core_mechanism\": \"Defining exit criteria upfront and enforcing pre-agreed handoff constraints\",\n      \"definition\": \"A framework for strategic initiatives that prioritizes clarity and surveillance over control.\",\n      \"application\": \"Protecting cognitive bandwidth and ensuring quality control in complex systems.\",\n      \"source_timestamps\": [\"00:00:00\", \"00:01:55\", \"00:44:10\", \"00:44:40\"]\n    }\n  ]\n}",
+    "parsed_json": {
+      "frameworks": [
+        {
+          "name": "Completion with Integrity",
+          "core_mechanism": "Defining exit criteria upfront and enforcing pre-agreed handoff constraints",
+          "definition": "A framework for strategic initiatives that prioritizes clarity and surveillance over control.",
+          "application": "Protecting cognitive bandwidth and ensuring quality control in complex systems.",
+          "source_timestamps": [
+            "00:00:00",
+            "00:01:55",
+            "00:44:10",
+            "00:44:40"
+          ]
+        }
+      ]
+    },
+    "chunk_count": 1,
+    "framework_chunks": [
+      {
+        "session_id": "TEST-SES-101",
+        "stream_type": "framework",
+        "content": "Framework: Completion with Integrity\nDefinition: A framework for strategic initiatives that prioritizes clarity and surveillance over control.\nMechanism: Defining exit criteria upfront and enforcing pre-agreed handoff constraints\nApplication: Protecting cognitive bandwidth and ensuring quality control in complex systems.",
+        "metadata": {
+          "framework_name": "Completion with Integrity",
+          "session_id": "TEST-SES-101",
+          "source_timestamps": [
+            "00:00:00",
+            "00:01:55",
+            "00:44:10",
+            "00:44:40"
+          ]
+        }
+      }
+    ],
+    "elapsed_sec": 28.077648639678955
+  },
+  {
+    "session_id": "TEST-SES-102",
+    "status": "EXTRACTED",
+    "raw_model_response": "{\n  \"frameworks\": [\n    {\n      \"name\": \"Table and Shoulder Test\",\n      \"core_mechanism\": \"Isolating two distinct variables: neurological load versus operational drift\",\n      \"definition\": \"The reality is that top performers don't decay overnight without structural friction.\",\n      \"application\": \"Before scheduling an uncomfortable confrontation, run the Table and Shoulder Test.\",\n      \"source_timestamps\": [\"00:00:55\", \"00:02:00\"]\n    },\n    {\n      \"name\": \"Operational Velocity vs. Scope\",\n      \"core_mechanism\": \"Has the company's operational velocity outpaced the scope of the seat he was hired into?\",\n      \"definition\": \"Sit across from him as an architect, not an interrogator.\",\n      \"application\": \"Primary diagnostic question: 'Where is the internal system fighting you right now?'\",\n      \"source_timestamps\": [\"00:02:00\", \"00:42:15\"]\n    },\n    {\n      \"name\": \"Regulating One's Own State\",\n      \"core_mechanism\": \"Regulating one's own state first, giving them the safety to acknowledge reality.\",\n      \"definition\": \"Run the diagnosis tomorrow and report back.\",\n      \"application\": \"When you regulate your own state first, you give them the safety to acknowledge reality.\",\n      \"source_timestamps\": [\"00:42:45\"]\n    }\n  ]\n}",
+    "parsed_json": {
+      "frameworks": [
+        {
+          "name": "Table and Shoulder Test",
+          "core_mechanism": "Isolating two distinct variables: neurological load versus operational drift",
+          "definition": "The reality is that top performers don't decay overnight without structural friction.",
+          "application": "Before scheduling an uncomfortable confrontation, run the Table and Shoulder Test.",
+          "source_timestamps": [
+            "00:00:55",
+            "00:02:00"
+          ]
+        },
+        {
+          "name": "Operational Velocity vs. Scope",
+          "core_mechanism": "Has the company's operational velocity outpaced the scope of the seat he was hired into?",
+          "definition": "Sit across from him as an architect, not an interrogator.",
+          "application": "Primary diagnostic question: 'Where is the internal system fighting you right now?'",
+          "source_timestamps": [
+            "00:02:00",
+            "00:42:15"
+          ]
+        },
+        {
+          "name": "Regulating One's Own State",
+          "core_mechanism": "Regulating one's own state first, giving them the safety to acknowledge reality.",
+          "definition": "Run the diagnosis tomorrow and report back.",
+          "application": "When you regulate your own state first, you give them the safety to acknowledge reality.",
+          "source_timestamps": [
+            "00:42:45"
+          ]
+        }
+      ]
+    },
+    "chunk_count": 3,
+    "framework_chunks": [
+      {
+        "session_id": "TEST-SES-102",
+        "stream_type": "framework",
+        "content": "Framework: Table and Shoulder Test\nDefinition: The reality is that top performers don't decay overnight without structural friction.\nMechanism: Isolating two distinct variables: neurological load versus operational drift\nApplication: Before scheduling an uncomfortable confrontation, run the Table and Shoulder Test.",
+        "metadata": {
+          "framework_name": "Table and Shoulder Test",
+          "session_id": "TEST-SES-102",
+          "source_timestamps": [
+            "00:00:55",
+            "00:02:00"
+          ]
+        }
+      },
+      {
+        "session_id": "TEST-SES-102",
+        "stream_type": "framework",
+        "content": "Framework: Operational Velocity vs. Scope\nDefinition: Sit across from him as an architect, not an interrogator.\nMechanism: Has the company's operational velocity outpaced the scope of the seat he was hired into?\nApplication: Primary diagnostic question: 'Where is the internal system fighting you right now?'",
+        "metadata": {
+          "framework_name": "Operational Velocity vs. Scope",
+          "session_id": "TEST-SES-102",
+          "source_timestamps": [
+            "00:02:00",
+            "00:42:15"
+          ]
+        }
+      },
+      {
+        "session_id": "TEST-SES-102",
+        "stream_type": "framework",
+        "content": "Framework: Regulating One's Own State\nDefinition: Run the diagnosis tomorrow and report back.\nMechanism: Regulating one's own state first, giving them the safety to acknowledge reality.\nApplication: When you regulate your own state first, you give them the safety to acknowledge reality.",
+        "metadata": {
+          "framework_name": "Regulating One's Own State",
+          "session_id": "TEST-SES-102",
+          "source_timestamps": [
+            "00:42:45"
+          ]
+        }
+      }
+    ],
+    "elapsed_sec": 41.41375422477722
+  },
+  {
+    "session_id": "TEST-SES-103",
+    "status": "SKIPPED_REJECTED",
+    "meeting_type": "Internal Operations",
+    "framework_chunks": []
+  },
+  {
+    "session_id": "TEST-SES-104",
+    "status": "SKIPPED_REJECTED",
+    "meeting_type": "Sales Discovery",
+    "framework_chunks": []
+  }
+]

@@ -1,0 +1,90 @@
+{
+  "test_id": "TC-04",
+  "query": "How do top performers use the Completion with Integrity framework and binary exit criteria to eliminate micromanagement?",
+  "timestamp": "2026-11-12T15:38:54Z",
+  "duration_seconds": 78.89,
+  "return_code": 0,
+  "executed_nodes": [
+    "When clicking \u2018Execute workflow\u2019",
+    "Query Input & Normalizer",
+    "Greeting Classifier",
+    "Greeting Router",
+    "Ollama Query Embedder",
+    "Validate Query Vector",
+    "Retrieve Framework Stream",
+    "Retrieve Voice Stream",
+    "Merge Retrieval Streams",
+    "Aggregate & Gate Results",
+    "Hard Gate (Has Results?)",
+    "Format Grounded Prompt",
+    "Ollama Grounded Generator",
+    "Format Final Response"
+  ],
+  "framework_stream": {
+    "count": 1,
+    "rows": [
+      {
+        "id": 30,
+        "session_id": "TEST-SES-101",
+        "stream_type": "framework",
+        "content": "Framework: Completion with Integrity\nDefinition: Look, micromanagement is almost never an ego problem. It is an information architecture breakdown. When you step back in, you're not doing it because you crave control; you're doing it because your system is bleeding signal. That friction is burning out your nervous system.\nMechanism: The reality is, top performers don't fail because of capability; they fail against ambiguous standards. In our practice, we use a framework called Completion with Integrity. Before anyone starts a strategic initiative, you define the binary exit criteria upfront. You stop asking 'How is this going?' and start enforcing pre-agreed handoff constraints. When clarity goes up, surveillance drops to zero.\nApplication: Mark D. is defining exit criteria for the enterprise audit and stepping away from the daily review.",
+        "metadata": {
+          "session_id": "TEST-SES-101",
+          "framework_name": "Completion with Integrity",
+          "source_timestamps": [
+            "00:01:55",
+            "00:44:10",
+            "00:44:40"
+          ]
+        },
+        "similarity": "0.7666"
+      }
+    ]
+  },
+  "voice_stream": {
+    "count": 1,
+    "rows": [
+      {
+        "id": 32,
+        "session_id": "TEST-SES-101",
+        "stream_type": "voice_sample",
+        "content": "The reality is, top performers don't fail because of capability; they fail against ambiguous standards. In our practice, we use a framework called Completion with Integrity. Before anyone starts a strategic initiative, you define the binary exit criteria upfront. You stop asking 'How is this going?' and start enforcing pre-agreed handoff constraints. When clarity goes up, surveillance drops to zero.",
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "char_count": 402,
+          "session_id": "TEST-SES-101",
+          "turn_count": 1,
+          "source_timestamps": [
+            "00:01:55"
+          ]
+        },
+        "similarity": "0.6850"
+      }
+    ]
+  },
+  "hard_gate_branch_selected": "HAS_RESULTS",
+  "llm_invoked": true,
+  "final_response": "Based on the provided framework evidence, voice style examples, and user question, I will deliver a focused, supportive executive coaching response addressing the user's question directly.\n\n\"I understand your question, and I'm here to help. To answer your question, top performers using the Completion with Integrity framework and binary exit criteria have found that they can eliminate micromanagement by defining clear, binary exit criteria upfront. This means establishing specific, measurable objectives and stopping the conversation about progress and outcomes. By doing so, they've been able to reduce the need for constant micromanagement and focus on high-level strategic initiatives.\n\n\"It's not about failing due to capability, but rather failing against ambiguous standards. By defining clear exit criteria, they've been able to regulate their nervous system and maintain a sense of clarity and focus. This, in turn, has allowed them to step back and let their systems run with more autonomy.\n\n\"I'd like to clarify that this is a direct quote from Dr. Sara Hegy's voice style example, and I've used it to calibrate my coaching response. I've also used the voice style examples provided to ensure I'm staying true to the tone and phrasing of Dr. Hegy's work. If you have any further questions or would like to explore this topic in more depth, I'm here to support you.\"",
+  "retrieval_metadata": {
+    "gate_status": "PASSED_THRESHOLD",
+    "framework_chunks": [
+      {
+        "session_id": "TEST-SES-101",
+        "similarity": "0.7666"
+      }
+    ],
+    "voice_chunks": [
+      {
+        "session_id": "TEST-SES-101",
+        "similarity": "0.6850"
+      }
+    ],
+    "llm_invoked": true
+  },
+  "evidence_files": {
+    "trace": "scripts/tc-04_execution_result.json",
+    "stdout": "scripts/tc-04_raw_stdout.log",
+    "stderr": "scripts/tc-04_raw_stderr.log"
+  },
+  "status": "PASS"
+}

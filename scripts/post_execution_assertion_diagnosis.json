@@ -1,0 +1,82 @@
+{
+  "stage": "Task 6 — Positive Retrieval Post-Execution Assertion Diagnosis",
+  "status": "DIAGNOSIS_COMPLETE_AWAITING_APPROVAL",
+  "incident_summary": {
+    "workflow_execution_status": "SUCCESS (exit code 0 in n8n engine, duration 84.64s)",
+    "workflow_id": "TSvKBGpM9nK7eb3U",
+    "executed_nodes_count": 14,
+    "failure_type": "Post-execution Python runner assertion failure (line 228 of scripts/execute_tc02.py)",
+    "exception": "AssertionError: Vector is not a list"
+  },
+  "root_cause_analysis": {
+    "failure_point_1": {
+      "file": "scripts/execute_tc02.py",
+      "lines": "226-229",
+      "code": "vec_data = run_data['Validate Query Vector'][0]['data']['main'][0][0]['json']\nvector = vec_data.get('vector')\nassert isinstance(vector, list)",
+      "cause": "Obsolete field name expectation. The n8n Code node 'Validate Query Vector' verifies the array length and elements internally, then emits 'query_vector_str' (formatted pgvector string) and 'embedding_dimension' (integer 1024) to keep downstream execution item payload sizes optimal. It does not emit a key named 'vector'. The raw 1,024 float array is present in upstream node 'Ollama Query Embedder' under the key 'embedding'."
+    },
+    "latent_failure_point_2": {
+      "file": "scripts/execute_tc02.py",
+      "line": "271",
+      "code": "assert agg_data.get('gate_status') == 'PASS'",
+      "cause": "Field name mismatch. Node 'Aggregate & Gate Results' outputs boolean 'has_qualifying_results': true (used by downstream If node 'Hard Gate (Has Results?)'). It does not emit a field named 'gate_status'."
+    },
+    "latent_failure_point_3": {
+      "file": "scripts/execute_tc02.py",
+      "lines": "279-282",
+      "code": "assert meta.get('gate_status') == 'PASS'\nassert meta.get('embedding_called') is True\nassert meta.get('sql_called') is True\nassert meta.get('llm_invoked') is True",
+      "cause": "Metadata schema mismatch. Node 'Format Final Response' emits 'gate_status': 'PASSED_THRESHOLD' (not 'PASS'). 'embedding_called' and 'sql_called' are only defined in 'Static Greeting Response' for greeting bypass; in positive retrieval, execution of embedding and SQL nodes is verified via the DAG 'executed_nodes' list."
+    }
+  },
+  "proposed_runner_correction": {
+    "file": "scripts/execute_tc02.py",
+    "backup_file": "scripts/backups/execute_tc02_pre_vector_assertion_fix_20261112_202200.py",
+    "proposed_patch": [
+      {
+        "target": "vec_data = run_data[\"Validate Query Vector\"][0][\"data\"][\"main\"][0][0][\"json\"]\n    vector = vec_data.get(\"vector\")\n    assert isinstance(vector, list), \"Vector is not a list\"\n    assert len(vector) == 1024, f\"Vector dimension mismatch: {len(vector)} (expected 1024)\"",
+        "replacement": "embed_data = run_data[\"Ollama Query Embedder\"][0][\"data\"][\"main\"][0][0][\"json\"]\n    raw_vector = embed_data.get(\"embedding\")\n    assert isinstance(raw_vector, list), \"Ollama Query Embedder 'embedding' is not a list\"\n    assert len(raw_vector) == 1024, f\"Ollama embedding dimension mismatch: {len(raw_vector)} (expected 1024)\"\n    vec_data = run_data[\"Validate Query Vector\"][0][\"data\"][\"main\"][0][0][\"json\"]\n    assert vec_data.get(\"embedding_dimension\") == 1024, f\"Validated dimension mismatch: {vec_data.get('embedding_dimension')}\"\n    assert isinstance(vec_data.get(\"query_vector_str\"), str) and vec_data.get(\"query_vector_str\").startswith(\"[\"), \"Invalid query_vector_str\""
+      },
+      {
+        "target": "assert agg_data.get(\"gate_status\") == \"PASS\", f\"Gate status mismatch: {agg_data.get('gate_status')}\"",
+        "replacement": "assert agg_data.get(\"has_qualifying_results\") is True, f\"Gate status mismatch: {agg_data.get('has_qualifying_results')}\""
+      },
+      {
+        "target": "assert meta.get(\"gate_status\") == \"PASS\", \"Final metadata gate_status must be PASS\"\n    assert meta.get(\"embedding_called\") is True, \"Final metadata embedding_called must be true\"\n    assert meta.get(\"sql_called\") is True, \"Final metadata sql_called must be true\"\n    assert meta.get(\"llm_invoked\") is True, \"Final metadata llm_invoked must be true\"",
+        "replacement": "assert meta.get(\"gate_status\") == \"PASSED_THRESHOLD\", f\"Final metadata gate_status mismatch: {meta.get('gate_status')}\"\n    assert meta.get(\"llm_invoked\") is True, \"Final metadata llm_invoked must be true\"\n    assert \"Ollama Query Embedder\" in executed_nodes, \"Ollama Query Embedder must be executed\"\n    assert \"Retrieve Framework Stream\" in executed_nodes, \"Retrieve Framework Stream must be executed\""
+      }
+    ]
+  },
+  "grounding_audit": {
+    "retrieved_context": {
+      "framework_chunk_id": 30,
+      "session_id": "TEST-SES-101",
+      "stream_type": "framework",
+      "framework_name": "Completion with Integrity",
+      "similarity_score": 0.7514,
+      "voice_chunks_retrieved": 0
+    },
+    "supported_claims": [
+      "Completion with Integrity is an executive coaching framework.",
+      "Binary exit criteria defined upfront eliminate micromanagement and surveillance.",
+      "Pre-agreed handoff constraints ensure strategic initiatives succeed against unambiguous standards.",
+      "Mark D. is defining exit criteria for the enterprise audit and stepping away from daily review."
+    ],
+    "unsupported_extrapolations": [
+      "The phrase 'In your case, Mark D. is stepping away...' treats the user as Mark D. or co-involved with Mark D. (entity binding ambiguity typical of 1B models).",
+      "'measurable objectives' and 'organization's overall goals and objectives' are corporate generalisms not in Chunk 30 text.",
+      "'focus on delivering high-quality results... increased productivity' is stylistic boilerplate."
+    ],
+    "instruction_adherence": {
+      "no_fabricated_dr_sara_quotes": true,
+      "no_invented_frameworks": true,
+      "section_b_empty_respected": true,
+      "opening_instruction_acknowledgment": "Model opens with: 'Based on the provided framework evidence, I'll respond to the user's question in a focused, supportive executive coaching tone, strictly adhering to Section A and Section B, and avoiding any claims not present in Section A.'"
+    }
+  },
+  "system_state": {
+    "knowledge_vault_count": 8,
+    "rejected_meetings_count": 2,
+    "target_workflow_active": false,
+    "ingestion_workflow_active": false
+  }
+}

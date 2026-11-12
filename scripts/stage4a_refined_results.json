@@ -1,0 +1,45 @@
+[
+  {
+    "session_id": "TEST-SES-101",
+    "title": "Weekly Strategy Session",
+    "raw_model_response": "{\n  \"frameworks\": [\n    {\n      \"name\": \"Completion with Integrity\",\n      \"is_named_framework\": true,\n      \"definition\": \"Look, micromanagement is almost never an ego problem. It is an information architecture breakdown. When you step back in, you're not doing it because you crave control; you're doing it because your system is bleeding signal. That friction is burning out your nervous system.\",\n      \"core_mechanism\": \"The reality is, top performers don't fail because of capability; they fail against ambiguous standards. In our practice, we use a framework called Completion with Integrity. Before anyone starts a strategic initiative, you define the binary exit criteria upfront. You stop asking 'How is this going?' and start enforcing pre-agreed handoff constraints. When clarity goes up, surveillance drops to zero.\",\n      \"application\": \"Mark D. is defining exit criteria for the enterprise audit and stepping away from the daily review.\",\n      \"source_timestamps\": [\n        \"00:01:55\",\n        \"00:44:10\",\n        \"00:44:40\"\n      ]\n    }\n  ]\n}",
+    "parsed_json": {
+      "frameworks": [
+        {
+          "name": "Completion with Integrity",
+          "is_named_framework": true,
+          "definition": "Look, micromanagement is almost never an ego problem. It is an information architecture breakdown. When you step back in, you're not doing it because you crave control; you're doing it because your system is bleeding signal. That friction is burning out your nervous system.",
+          "core_mechanism": "The reality is, top performers don't fail because of capability; they fail against ambiguous standards. In our practice, we use a framework called Completion with Integrity. Before anyone starts a strategic initiative, you define the binary exit criteria upfront. You stop asking 'How is this going?' and start enforcing pre-agreed handoff constraints. When clarity goes up, surveillance drops to zero.",
+          "application": "Mark D. is defining exit criteria for the enterprise audit and stepping away from the daily review.",
+          "source_timestamps": [
+            "00:01:55",
+            "00:44:10",
+            "00:44:40"
+          ]
+        }
+      ]
+    },
+    "elapsed_sec": 53.16973280906677
+  },
+  {
+    "session_id": "TEST-SES-102",
+    "title": "Executive Catch-up",
+    "raw_model_response": "{\n  \"frameworks\": [\n    {\n      \"name\": \"Table and Shoulder Test\",\n      \"is_named_framework\": true,\n      \"definition\": \"Isolate two distinct variables: neurological load versus operational drift.\",\n      \"core_mechanism\": \"Run the Table and Shoulder Test.\",\n      \"application\": \"Run the diagnosis tomorrow and report back.\",\n      \"source_timestamps\": [\n        \"00:00:55\",\n        \"00:02:00\"\n      ]\n    }\n  ]\n}",
+    "parsed_json": {
+      "frameworks": [
+        {
+          "name": "Table and Shoulder Test",
+          "is_named_framework": true,
+          "definition": "Isolate two distinct variables: neurological load versus operational drift.",
+          "core_mechanism": "Run the Table and Shoulder Test.",
+          "application": "Run the diagnosis tomorrow and report back.",
+          "source_timestamps": [
+            "00:00:55",
+            "00:02:00"
+          ]
+        }
+      ]
+    },
+    "elapsed_sec": 25.320076942443848
+  }
+]

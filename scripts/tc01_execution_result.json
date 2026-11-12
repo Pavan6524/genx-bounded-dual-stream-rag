@@ -1,0 +1,192 @@
+{
+  "data": {
+    "version": 1,
+    "startData": {},
+    "resultData": {
+      "runData": {
+        "When clicking \u2018Execute workflow\u2019": [
+          {
+            "startTime": 1794488467219,
+            "executionIndex": 0,
+            "source": [],
+            "hints": [],
+            "executionTime": 6,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {},
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Query Input & Normalizer": [
+          {
+            "startTime": 1794488467228,
+            "executionIndex": 1,
+            "source": [
+              {
+                "previousNode": "When clicking \u2018Execute workflow\u2019",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            ],
+            "hints": [],
+            "executionTime": 3047,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "query": "Hello"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Greeting Classifier": [
+          {
+            "startTime": 1794488470276,
+            "executionIndex": 2,
+            "source": [
+              {
+                "previousNode": "Query Input & Normalizer",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            ],
+            "hints": [],
+            "executionTime": 28,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "query": "Hello",
+                      "is_greeting": true,
+                      "greeting_response": "Hello! I am Dr. Sara Hegy's executive coaching assistant at GenX Leadership Academy. How can I support your leadership journey or discuss our executive coaching frameworks today?"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Greeting Router": [
+          {
+            "startTime": 1794488470304,
+            "executionIndex": 3,
+            "source": [
+              {
+                "previousNode": "Greeting Classifier",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            ],
+            "hints": [],
+            "executionTime": 195,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "query": "Hello",
+                      "is_greeting": true,
+                      "greeting_response": "Hello! I am Dr. Sara Hegy's executive coaching assistant at GenX Leadership Academy. How can I support your leadership journey or discuss our executive coaching frameworks today?"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ],
+                []
+              ]
+            }
+          }
+        ],
+        "Static Greeting Response": [
+          {
+            "startTime": 1794488470499,
+            "executionIndex": 4,
+            "source": [
+              {
+                "previousNode": "Greeting Router",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            ],
+            "hints": [],
+            "executionTime": 81,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "query": "Hello",
+                      "response": "Hello! I am Dr. Sara Hegy's executive coaching assistant at GenX Leadership Academy. How can I support your leadership journey or discuss our executive coaching frameworks today?",
+                      "framework_count": 0,
+                      "voice_count": 0,
+                      "total_qualifying_chunks": 0,
+                      "retrieval_metadata": {
+                        "gate_status": "BYPASS_GREETING",
+                        "is_greeting": true,
+                        "embedding_called": false,
+                        "sql_called": false,
+                        "llm_invoked": false
+                      }
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "lastNodeExecuted": "Static Greeting Response"
+    },
+    "executionData": {
+      "contextData": {},
+      "nodeExecutionStack": [],
+      "metadata": {},
+      "waitingExecution": {},
+      "waitingExecutionSource": {},
+      "runtimeData": {
+        "version": 1,
+        "establishedAt": 1794488467203,
+        "source": "cli",
+        "triggerNode": {
+          "name": "When clicking \u2018Execute workflow\u2019",
+          "type": "n8n-nodes-base.manualTrigger"
+        }
+      }
+    },
+    "resumeToken": "5f30b0ee26aca02d76769a82e3fbb4a64f7a8d6eb3272479078e0c472d1a857f"
+  },
+  "mode": "cli",
+  "startedAt": "2026-11-12T13:01:07.190Z",
+  "stoppedAt": "2026-11-12T13:01:10.585Z",
+  "storedAt": "db",
+  "status": "success",
+  "finished": true
+}

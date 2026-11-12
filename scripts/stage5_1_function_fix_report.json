@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "backup_path": "scripts/backups/init_functions_20261112_160414.sql",
+  "functions_patched": [
+    "archive_rejected_test_meeting",
+    "ingest_test_session_vault"
+  ],
+  "error_resolved": "42702 (ambiguous_column)",
+  "resolution_details": "Qualified column references in DELETE statements with table aliases rm and kv",
+  "signatures_preserved": true,
+  "contracts_preserved": true,
+  "live_counts": {
+    "knowledge_vault": 0,
+    "rejected_meetings": 0
+  },
+  "production_functions_intact": true,
+  "ingestion_executed": false
+}

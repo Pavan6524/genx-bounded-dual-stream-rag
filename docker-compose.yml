@@ -1,0 +1,97 @@
+# GenX Leadership Academy — Docker Compose
+# Bounded Dual-Stream RAG Pipeline
+#
+# Services:
+#   postgres  — PostgreSQL 16 + pgvector (vector storage)
+#   n8n       — Workflow orchestration (connects to Ollama on host)
+#
+# Ollama runs on the host machine and is reached via
+# http://host.docker.internal:11434 from inside containers.
+
+services:
+  # ── PostgreSQL 16 with pgvector ──────────────────────
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: genx-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-genx}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-genx_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-genx_rag}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-genx} -d ${POSTGRES_DB:-genx_rag}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    networks:
+      - genx-net
+
+  # ── n8n Workflow Engine ──────────────────────────────
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: genx-n8n
+    restart: unless-stopped
+    environment:
+      # n8n core settings
+      - N8N_HOST=0.0.0.0
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:${N8N_PORT:-5678}/
+      - GENERIC_TIMEZONE=${GENERIC_TIMEZONE:-Asia/Kolkata}
+      - N8N_DIAGNOSTICS_ENABLED=false
+      - N8N_PERSONALIZATION_ENABLED=false
+      - N8N_RESTRICT_FILE_ACCESS_TO=/workflows;/data
+      # PostgreSQL connection (for workflow nodes via $env)
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGDATABASE=${POSTGRES_DB:-genx_rag}
+      - PGUSER=${POSTGRES_USER:-genx}
+      - PGPASSWORD=${POSTGRES_PASSWORD:-genx_secret}
+      # Ollama connection (for workflow nodes via $env)
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      - OLLAMA_EMBED_MODEL=${OLLAMA_EMBED_MODEL:-bge-m3}
+      - OLLAMA_LLM_MODEL=${OLLAMA_LLM_MODEL:-llama3.2:1b}
+    ports:
+      - "${N8N_PORT:-5678}:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./data:/data:ro
+      - ./workflows:/workflows:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:5678/healthz || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+    networks:
+      - genx-net
+
+volumes:
+  postgres_data:
+    name: genx_postgres_data
+  n8n_data:
+    name: genx_n8n_data
+
+networks:
+  genx-net:
+    name: genx-network
+    driver: bridge

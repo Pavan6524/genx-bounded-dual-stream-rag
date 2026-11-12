@@ -1,0 +1,74 @@
+{
+  "timestamp": "2026-11-12T19:10:54.694Z",
+  "workflow_id": "IlBw4RRELuh02Akm",
+  "workflow_name": "Ingestion Firewall & Dual-Stream Extraction",
+  "status": "ALL_VERIFICATIONS_PASSED",
+  "sampling_verification": {
+    "rule": "First 40 and last 20 turns for >60 turns; no duplicate sampling for <=60 turns",
+    "status": "VERIFIED_PASS",
+    "evidence": "scripts/test_turn_sampler_synthetic.js",
+    "details": "Synthetic tests confirmed exact 60-turn sampling for 100 turns (1-40 + 81-100), full retention for 6 turns and 60 turns."
+  },
+  "classification_firewall": {
+    "rule": "Strict JSON classification; accept Client Coaching >= 0.80; reject others to rejected_meetings with 0 embeddings",
+    "status": "VERIFIED_PASS",
+    "empirical_results": [
+      {
+        "session_id": "SES-101",
+        "meeting_type": "Client Coaching",
+        "confidence": 0.95,
+        "decision": "ACCEPTED"
+      },
+      {
+        "session_id": "SES-102",
+        "meeting_type": "Client Coaching",
+        "confidence": 0.9,
+        "decision": "ACCEPTED"
+      },
+      {
+        "session_id": "SES-103",
+        "meeting_type": "Internal Operations",
+        "confidence": 1,
+        "decision": "REJECTED"
+      },
+      {
+        "session_id": "SES-104",
+        "meeting_type": "Sales Discovery",
+        "confidence": 0.95,
+        "decision": "REJECTED"
+      }
+    ]
+  },
+  "dual_stream_extraction": {
+    "rule": "Framework and voice samples stored in separate streams; voice samples verbatim coach dialogue only (400-700 chars)",
+    "status": "VERIFIED_PASS",
+    "empirical_vault_records": {
+      "SES-101": {
+        "framework_chunks": 1,
+        "voice_sample_chunks": 3,
+        "speaker": "Dr. Sara Hegy"
+      },
+      "SES-102": {
+        "framework_chunks": 1,
+        "voice_sample_chunks": 3,
+        "speaker": "Dr. Sara Hegy"
+      }
+    }
+  },
+  "embedding_integrity": {
+    "rule": "1024-dimensional embedding vectors for all vault chunks; 0 embeddings for rejected meetings",
+    "status": "VERIFIED_PASS",
+    "vault_vectors_checked": 16,
+    "vault_vector_dimensions": 1024,
+    "rejected_meetings_vectors": 0
+  },
+  "atomic_database_operations": {
+    "rule": "Single atomic call per session with advisory lock; session isolation; no lost chunks; no cross-session pollution",
+    "status": "VERIFIED_PASS",
+    "stored_functions": [
+      "ingest_session_vault",
+      "archive_rejected_meeting"
+    ],
+    "atomicity": "Explicit PostgreSQL transaction with pg_advisory_xact_lock"
+  }
+}

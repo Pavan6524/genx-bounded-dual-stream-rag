@@ -1,0 +1,62 @@
+{
+  "stage": "Stage 6.2C — TC-02 Input Mechanism & Runner Safety Report",
+  "report_timestamp": "2026-11-12T18:36:00Z",
+  "status": "INVESTIGATION_COMPLETE_AWAITING_REVIEW",
+  "workflow_id": "TSvKBGpM9nK7eb3U",
+  "workflow_name": "Bounded Dual-Stream Gated Retrieval",
+  "tc02_target_query": "How do I practice Completion with Integrity when closing projects?",
+  "1_verified_behavior_of_n8n_execute": {
+    "cli_command": "n8n execute --id=TSvKBGpM9nK7eb3U",
+    "execution_mode": "cli",
+    "starting_node": "When clicking ‘Execute workflow’ (manualTrigger v1)",
+    "trigger_output": "The manualTrigger node in CLI mode outputs a single empty item: [{ 'json': {} }].",
+    "normalizer_behavior": "The downstream 'Query Input & Normalizer' node checks firstItem.json.query and firstItem.json.text. When both are missing, it defaults to 'Hello'.",
+    "tc01_relevance": "This default behavior allowed TC-01 ('Hello') to execute seamlessly, but it prevents non-greeting queries from running via bare CLI execution."
+  },
+  "2_cli_input_data_support": {
+    "cli_flags_available": ["--id", "--rawOutput", "--file (deprecated)"],
+    "cli_payload_flag_present": false,
+    "pin_data_resolution": "Inspected /usr/local/lib/node_modules/n8n/dist/workflow-runner.js: resolvePinData(data) explicitly checks if executionMode is 'manual' or 'evaluation'. In 'cli' mode, pinData is returned as undefined.",
+    "conclusion": "The native 'n8n execute' CLI binary does not support passing dynamic item payloads or query strings directly via command-line arguments."
+  },
+  "3_supported_methods_to_pass_query": {
+    "options_analyzed": [
+      {
+        "method": "Option 1: n8n Internal REST API (/rest/workflows/{id}/run)",
+        "mechanism": "Send an HTTP POST to http://127.0.0.1:5678/rest/workflows/TSvKBGpM9nK7eb3U/run with destinationNode and test data in 'manual' executionMode.",
+        "pros": "Supported natively by n8n server; runs inside existing daemon without port 5679 task-broker collision; respects inactive workflow state (active: false); delivers exact { query: '...' } payload to 'Query Input & Normalizer'.",
+        "cons": "Requires n8n UI/REST authentication session or internal request.",
+        "feasibility": "High"
+      },
+      {
+        "method": "Option 2: Test Runner with Dynamic Input Parameter / Execution Script",
+        "mechanism": "Execute via n8n's internal runner script in node inside genx-n8n container that instantiates WorkflowRunner with executionMode: 'manual' and pinData: { 'When clicking ‘Execute workflow’': [{ json: { query: '...' } }] }.",
+        "pros": "Direct container execution; 100% reproducible; passes exact query; workflow remains inactive; zero modifications to TSvKBGpM9nK7eb3U; captures complete DAG runData and node outputs.",
+        "cons": "Requires a standalone Python/Node bridge inside container.",
+        "feasibility": "High"
+      },
+      {
+        "method": "Option 3: Fallback Parameter in Query Input & Normalizer",
+        "mechanism": "Update 'Query Input & Normalizer' to check $env.RETRIEVAL_QUERY or fallback query.",
+        "pros": "Allows running via 'docker exec -e RETRIEVAL_QUERY=... n8n execute'.",
+        "cons": "Violates the strict rule: 'Do not modify workflow JSON, SQL, database records, credentials, or ingestion workflow.'",
+        "feasibility": "Rejected (violates scope constraints)"
+      }
+    ],
+    "recommended_approach": "Option 2 (Direct n8n WorkflowRunner bridge inside container in 'manual' mode with pinData) or Option 1, preserving TSvKBGpM9nK7eb3U 100% untouched while delivering the exact coaching query."
+  },
+  "4_can_current_runner_safely_execute": {
+    "safe_to_execute_without_modification": false,
+    "reason": "If executed with bare 'n8n execute --id=TSvKBGpM9nK7eb3U', the workflow would receive an empty item from manualTrigger and fall back to 'Hello' (re-running TC-01 instead of TC-02). A dedicated input-injection runner must be approved first."
+  },
+  "5_limitations_and_unresolved_uncertainties": [
+    "Native 'n8n execute' has no --data or --input argument for manual triggers.",
+    "Workflow TSvKBGpM9nK7eb3U must remain completely unmodified, requiring input injection to occur at the execution boundary.",
+    "Workflow must remain inactive (active: false) at all times."
+  ],
+  "safety_confirmation": {
+    "workflow_modified": false,
+    "database_modified": false,
+    "tc02_executed": false
+  }
+}

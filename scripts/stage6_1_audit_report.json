@@ -1,0 +1,165 @@
+{
+  "stage": "Stage 6.1 \u2014 Pre-Import Runtime Contract Audit",
+  "workflow_file": "workflows/gated_retrieval.json",
+  "audit_timestamp": "2026-11-12T16:54:00Z",
+  "workflow_imported_to_n8n": false,
+  "workflow_executed_in_n8n": false,
+  "database_modified": false,
+  "database_state": {
+    "knowledge_vault_count": 8,
+    "rejected_meetings_count": 2,
+    "mutations_detected": 0
+  },
+  "audit_results": {
+    "audit_1_query_preservation": {
+      "status": "PASS",
+      "description": "Verify original query survives DAG and is preserved in prompt and response without corruption.",
+      "checks": {
+        "normalizer_emits_query": {
+          "passed": true,
+          "node": "Query Input & Normalizer",
+          "details": "Trims query and outputs { query: trimmed }."
+        },
+        "greeting_classifier_preserves_query": {
+          "passed": true,
+          "node": "Greeting Classifier",
+          "details": "Preserves trimmed query alongside is_greeting flag."
+        },
+        "validate_query_vector_restores_query": {
+          "passed": true,
+          "node": "Validate Query Vector",
+          "details": "Restores original query from Greeting Classifier into vector output item."
+        },
+        "aggregate_gate_preserves_query_across_empty_sql": {
+          "passed": true,
+          "node": "Aggregate & Gate Results",
+          "details": "Fetches query from $('Validate Query Vector') regardless of whether SQL returns rows or empty results."
+        },
+        "prompt_includes_user_query": {
+          "passed": true,
+          "node": "Format Grounded Prompt",
+          "details": "Embeds preserved query verbatim into SECTION C of the prompt."
+        },
+        "final_response_contains_original_query": {
+          "passed": true,
+          "node": "Format Final Response",
+          "details": "Final JSON output payload maps query from prior.query."
+        }
+      }
+    },
+    "audit_2_merge_and_empty_results": {
+      "status": "PASS",
+      "description": "Verify Merge v3 behavior, alwaysOutputData empty placeholder handling, and absence of false positive chunks.",
+      "checks": {
+        "merge_mode_append": {
+          "passed": true,
+          "node": "Merge Retrieval Streams",
+          "details": "Merge node configured with mode: 'append'."
+        },
+        "postgres_always_output_data": {
+          "passed": true,
+          "details": "Framework alwaysOutputData=True, Voice alwaysOutputData=True. Guarantees both inputs to Merge v3 always resolve without hanging."
+        },
+        "placeholder_rejection_no_false_positives": {
+          "passed": true,
+          "node": "Aggregate & Gate Results",
+          "details": "Aggregation strictly verifies j.id !== undefined and stream_type matching, eliminating alwaysOutputData empty placeholder objects from qualifying chunk counts."
+        }
+      }
+    },
+    "audit_3_postgresql_parameter_binding": {
+      "status": "PASS",
+      "description": "Inspect PostgreSQL nodes for parameterized binding, pgvector casting, thresholds, and limits.",
+      "checks": {
+        "framework_parameter_binding": {
+          "passed": true,
+          "node": "Retrieve Framework Stream",
+          "queryReplacement": "={{ $('Validate Query Vector').first().json.query_vector_str }}",
+          "details": "Safe parameter replacement via queryReplacement expression into $1::vector."
+        },
+        "framework_threshold_and_limit": {
+          "passed": true,
+          "node": "Retrieve Framework Stream",
+          "threshold": ">= 0.70",
+          "limit": 2,
+          "order": "ORDER BY (embedding <=> $1::vector) ASC"
+        },
+        "voice_parameter_binding": {
+          "passed": true,
+          "node": "Retrieve Voice Stream",
+          "queryReplacement": "={{ $('Validate Query Vector').first().json.query_vector_str }}",
+          "details": "Safe parameter replacement via queryReplacement expression into $1::vector."
+        },
+        "voice_threshold_and_limit": {
+          "passed": true,
+          "node": "Retrieve Voice Stream",
+          "threshold": ">= 0.65",
+          "limit": 2,
+          "order": "ORDER BY (embedding <=> $1::vector) ASC"
+        },
+        "no_unsafe_sql_interpolation": {
+          "passed": true,
+          "details": "Zero template string or expression interpolation inside SQL text. Pure parameterized SQL."
+        }
+      }
+    },
+    "audit_4_branch_behavior": {
+      "status": "PASS",
+      "description": "Verify greeting bypass, vector validation halt on invalid vectors, and zero-result hard gate isolation.",
+      "checks": {
+        "greeting_branch_routes_to_static_only": {
+          "passed": true,
+          "node": "Greeting Router",
+          "details": "True condition connects solely to Static Greeting Response."
+        },
+        "static_greeting_is_terminal": {
+          "passed": true,
+          "node": "Static Greeting Response",
+          "details": "Terminal node: zero outgoing edges. Bypasses embedding, database, and LLM."
+        },
+        "invalid_vector_throws_exception": {
+          "passed": true,
+          "node": "Validate Query Vector",
+          "details": "Throws immediate error if vector is missing, dimension != 1024, or non-finite, halting execution before PostgreSQL."
+        },
+        "zero_result_routes_to_fallback_only": {
+          "passed": true,
+          "node": "Hard Gate (Has Results?)",
+          "details": "False condition connects solely to Return Zero Result Output."
+        },
+        "zero_result_fallback_is_terminal": {
+          "passed": true,
+          "node": "Return Zero Result Output",
+          "details": "Terminal node: zero outgoing edges. Bypasses generation LLM completely."
+        }
+      }
+    },
+    "audit_5_prompt_integrity": {
+      "status": "PASS",
+      "description": "Verify section separation, voice non-conflation, strict constraints, and exact fallback string.",
+      "checks": {
+        "section_separation": {
+          "passed": true,
+          "node": "Format Grounded Prompt",
+          "details": "Strict 4-section architecture separating conceptual framework facts from voice style samples."
+        },
+        "voice_style_calibration_constraint": {
+          "passed": true,
+          "node": "Format Grounded Prompt",
+          "details": "Explicitly forbids voice samples from being treated as conceptual frameworks or inventing statements for Dr. Sara."
+        },
+        "exact_fallback_string_verified": {
+          "passed": true,
+          "node": "Return Zero Result Output",
+          "exact_string": "No documented coaching frameworks match this topic."
+        }
+      }
+    }
+  },
+  "discovered_issues": [],
+  "minimal_proposed_corrections": [],
+  "files_changed": [
+    "scripts/stage6_1_audit_report.json"
+  ],
+  "overall_status": "PASS"
+}

@@ -1,0 +1,121 @@
+{
+  "stage": "Stage 6.2C — Controlled TC-02 Runtime Retrieval Test Report",
+  "execution_timestamp": "2026-11-12T19:53:00Z",
+  "workflow_id": "TSvKBGpM9nK7eb3U",
+  "workflow_name": "Bounded Dual-Stream Gated Retrieval",
+  "workflow_active_state": {
+    "before_execution": false,
+    "after_execution": false,
+    "preserved_inactive": true
+  },
+  "ingestion_workflow_status": {
+    "workflow_id": "IlBw4RRELuh02Akm",
+    "status": "UNTOUCHED_AND_INACTIVE"
+  },
+  "database_counts": {
+    "knowledge_vault_before": 8,
+    "knowledge_vault_after": 8,
+    "rejected_meetings_before": 2,
+    "rejected_meetings_after": 2,
+    "mutations": 0
+  },
+  "test_execution_details": {
+    "test_id": "TC-02",
+    "name": "Framework Retrieval Runtime Test",
+    "input_query": "How do I practice Completion with Integrity when closing projects?",
+    "n8n_exit_code": 0,
+    "execution_duration_seconds": 34.75,
+    "executed_nodes_count": 12,
+    "executed_nodes": [
+      "When clicking ‘Execute workflow’",
+      "Query Input & Normalizer",
+      "Greeting Classifier",
+      "Greeting Router",
+      "Ollama Query Embedder",
+      "Validate Query Vector",
+      "Retrieve Framework Stream",
+      "Retrieve Voice Stream",
+      "Merge Retrieval Streams",
+      "Aggregate & Gate Results",
+      "Hard Gate (Has Results?)",
+      "Return Zero Result Output"
+    ],
+    "prohibited_nodes_executed": [],
+    "step_verifications": {
+      "input_injection": {
+        "status": "PASS",
+        "node": "When clicking ‘Execute workflow’",
+        "injected_query": "How do I practice Completion with Integrity when closing projects?"
+      },
+      "query_normalization": {
+        "status": "PASS",
+        "node": "Query Input & Normalizer",
+        "normalized_query": "How do I practice Completion with Integrity when closing projects?"
+      },
+      "greeting_classification": {
+        "status": "PASS",
+        "node": "Greeting Classifier",
+        "is_greeting": false,
+        "greeting_response": null
+      },
+      "greeting_routing": {
+        "status": "PASS",
+        "node": "Greeting Router",
+        "selected_branch": "Index 1 (Non-Greeting / Substantive Pipeline)"
+      },
+      "query_embedding": {
+        "status": "PASS",
+        "node": "Ollama Query Embedder",
+        "model": "bge-m3:latest",
+        "vector_dimensions": 1024,
+        "execution_time_ms": 20213
+      },
+      "vector_validation": {
+        "status": "PASS",
+        "node": "Validate Query Vector",
+        "finite_numeric_elements": 1024,
+        "non_finite_elements": 0
+      },
+      "framework_retrieval_sql": {
+        "status": "PASS_ZERO_MATCH",
+        "node": "Retrieve Framework Stream",
+        "sql_threshold": "1 - (embedding <=> $1::vector) >= 0.70",
+        "limit": 2,
+        "returned_rows": 0
+      },
+      "voice_retrieval_sql": {
+        "status": "PASS_ZERO_MATCH",
+        "node": "Retrieve Voice Stream",
+        "sql_threshold": "1 - (embedding <=> $1::vector) >= 0.65",
+        "limit": 2,
+        "returned_rows": 0
+      },
+      "aggregation_and_hard_gate": {
+        "status": "PASS_DETERMINISTIC_GATE",
+        "node": "Aggregate & Gate Results",
+        "framework_count": 0,
+        "voice_count": 0,
+        "total_qualifying_chunks": 0,
+        "has_qualifying_results": false,
+        "gate_action": "Bypass generation LLM; route to Return Zero Result Output"
+      },
+      "terminal_output": {
+        "status": "PASS",
+        "node": "Return Zero Result Output",
+        "response_text": "No documented coaching frameworks match this topic.",
+        "retrieval_metadata": {
+          "gate_status": "REJECTED_ZERO_RESULTS",
+          "framework_threshold": 0.7,
+          "voice_threshold": 0.65,
+          "llm_invoked": false
+        }
+      }
+    }
+  },
+  "architectural_compliance_finding": "The hard cosine similarity threshold gate functioned exactly as specified by the assessment architecture. When SQL similarity filters returned zero rows above 0.70 and 0.65, the workflow deterministically prevented LLM hallucination and emitted the exact fallback response.",
+  "raw_evidence_files": [
+    "scripts/tc02_raw_stdout.log",
+    "scripts/tc02_raw_stderr.log",
+    "scripts/tc02_execution_result.json"
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "test_id": "TC-06",
+  "query": "How does an executive protect cognitive bandwidth and let the architecture absorb ambiguity?",
+  "timestamp": "2026-11-12T15:41:12Z",
+  "duration_seconds": 55.69,
+  "return_code": 0,
+  "executed_nodes": [
+    "When clicking \u2018Execute workflow\u2019",
+    "Query Input & Normalizer",
+    "Greeting Classifier",
+    "Greeting Router",
+    "Ollama Query Embedder",
+    "Validate Query Vector",
+    "Retrieve Framework Stream",
+    "Retrieve Voice Stream",
+    "Merge Retrieval Streams",
+    "Aggregate & Gate Results",
+    "Hard Gate (Has Results?)",
+    "Format Grounded Prompt",
+    "Ollama Grounded Generator",
+    "Format Final Response"
+  ],
+  "framework_stream": {
+    "count": 0,
+    "rows": []
+  },
+  "voice_stream": {
+    "count": 1,
+    "rows": [
+      {
+        "id": 33,
+        "session_id": "TEST-SES-101",
+        "stream_type": "voice_sample",
+        "content": "Exactly. Protect your cognitive bandwidth. Let the architecture do the quality control, not your adrenaline. We will audit the feedback loop next Tuesday.",
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "char_count": 154,
+          "session_id": "TEST-SES-101",
+          "turn_count": 1,
+          "source_timestamps": [
+            "00:44:40"
+          ]
+        },
+        "similarity": "0.6685"
+      }
+    ]
+  },
+  "hard_gate_branch_selected": "HAS_RESULTS",
+  "llm_invoked": true,
+  "final_response": "Based on the provided framework evidence, I will respond to the user's question in a way that aligns with the conceptual grounding, voice style calibration, and partial retrieval transparency constraints.\n\nTo address the user's question, \"How does an executive protect cognitive bandwidth and let the architecture absorb ambiguity?\" I will provide a response that focuses on the conceptual grounding and voice style calibration.\n\n\"Protecting cognitive bandwidth is crucial for executives to maintain focus and efficiency. This can be achieved by prioritizing tasks, minimizing distractions, and leveraging the architecture's built-in mechanisms to absorb ambiguity. By doing so, executives can optimize their cognitive bandwidth, ensuring they can tackle complex challenges with clarity and precision.\"\n\nThis response is grounded in the retrieved voice style example from Dr. Sara Hegy, and it calibrates the tone and phrasing to support the executive coaching response.",
+  "retrieval_metadata": {
+    "gate_status": "PASSED_THRESHOLD",
+    "framework_chunks": [],
+    "voice_chunks": [
+      {
+        "session_id": "TEST-SES-101",
+        "similarity": "0.6685"
+      }
+    ],
+    "llm_invoked": true
+  },
+  "evidence_files": {
+    "trace": "scripts/tc-06_execution_result.json",
+    "stdout": "scripts/tc-06_raw_stdout.log",
+    "stderr": "scripts/tc-06_raw_stderr.log"
+  },
+  "status": "PASS"
+}

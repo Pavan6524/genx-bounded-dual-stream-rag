@@ -1,0 +1,47 @@
+{
+  "stage": "Stage 6.2C — Post-Import Retrieval Workflow Verification",
+  "verification_timestamp": "2026-11-12T19:50:00Z",
+  "import_command": "docker exec genx-n8n n8n import:workflow --input=/workflows/gated_retrieval.json --projectId=w24y2iBD8xkaEi8K --activeState=false",
+  "import_command_exit_code": 0,
+  "import_summary": "Successfully imported 1 workflow.",
+  "target_workflow_verification": {
+    "workflow_id": "TSvKBGpM9nK7eb3U",
+    "workflow_name": "Bounded Dual-Stream Gated Retrieval",
+    "project_id": "w24y2iBD8xkaEi8K",
+    "active_state": false,
+    "version_counter": 2,
+    "node_count": 16,
+    "duplicate_created": false
+  },
+  "corrected_expressions_verification": {
+    "node_1_ollama_query_embedder": {
+      "node_name": "Ollama Query Embedder",
+      "type": "n8n-nodes-base.httpRequest",
+      "jsonBody_expression": "={{ {\n  model: $env.OLLAMA_EMBED_MODEL || 'bge-m3',\n  prompt: $json.query\n} }}",
+      "status": "VERIFIED_IN_LIVE_EXPORT"
+    },
+    "node_2_ollama_grounded_generator": {
+      "node_name": "Ollama Grounded Generator",
+      "type": "n8n-nodes-base.httpRequest",
+      "jsonBody_expression": "={{ {\n  model: $env.OLLAMA_LLM_MODEL || 'llama3.2:1b',\n  prompt: $json.generation_prompt,\n  stream: false,\n  options: {\n    temperature: 0.2\n  }\n} }}",
+      "status": "VERIFIED_IN_LIVE_EXPORT"
+    }
+  },
+  "ingestion_workflow_isolation": {
+    "workflow_id": "IlBw4RRELuh02Akm",
+    "workflow_name": "Ingestion Firewall & Dual-Stream Extraction (Runtime Test)",
+    "active_state": false,
+    "status": "UNTOUCHED_AND_INACTIVE"
+  },
+  "database_baseline_verification": {
+    "knowledge_vault_count": 8,
+    "rejected_meetings_count": 2,
+    "mutations_detected": 0
+  },
+  "runtime_execution_status": {
+    "tc02_executed": false,
+    "workflows_invoked": false,
+    "ollama_invoked": false
+  },
+  "overall_status": "POST_IMPORT_VERIFICATION_PASS"
+}

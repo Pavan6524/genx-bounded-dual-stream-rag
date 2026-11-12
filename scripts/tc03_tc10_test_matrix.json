@@ -1,0 +1,202 @@
+{
+  "project": "GenX Leadership Academy Agentic RAG",
+  "assessment": "Bounded Dual-Stream RAG & Ingestion Classification Firewall",
+  "version": "1.1 — Post-Task 7.1 Engineering Accuracy Review",
+  "updated_at": "2026-11-12T20:45:00Z",
+  "database_record_identity_clarification": {
+    "status": "TEST_PREFIXED_BASELINE_ONLY",
+    "stored_knowledge_sessions": ["TEST-SES-101", "TEST-SES-102"],
+    "stored_rejected_sessions": ["TEST-SES-103", "TEST-SES-104"],
+    "production_mock_sessions_status": "NOT_YET_INGESTED (SES-101 to SES-104 in data/mock_transcripts.json remain un-ingested by live workflow)",
+    "actual_stored_chunks": {
+      "framework": [
+        {"id": 30, "session_id": "TEST-SES-101", "name": "Completion with Integrity"},
+        {"id": 34, "session_id": "TEST-SES-102", "name": "Table and Shoulder Test"}
+      ],
+      "voice_sample": [
+        {"id": 31, "session_id": "TEST-SES-101", "preview": "Look, Mark, micromanagement is almost never..."},
+        {"id": 32, "session_id": "TEST-SES-101", "preview": "The reality is, top performers don't fail..."},
+        {"id": 33, "session_id": "TEST-SES-101", "preview": "Exactly. Protect your cognitive bandwidth..."},
+        {"id": 35, "session_id": "TEST-SES-102", "preview": "The reality is that top performers don't decay..."},
+        {"id": 36, "session_id": "TEST-SES-102", "preview": "Has the company's operational velocity..."},
+        {"id": 37, "session_id": "TEST-SES-102", "preview": "When you regulate your own state first..."}
+      ]
+    }
+  },
+  "runtime_benchmarks_empirical": {
+    "greeting_bypass_duration_sec": 27.04,
+    "negative_gating_duration_sec": 34.75,
+    "positive_generation_duration_sec": 84.64,
+    "query_embedding_calibration_sec": 2.26,
+    "manual_review_buffer_min": 5.0
+  },
+  "test_matrix": [
+    {
+      "test_id": "TC-01",
+      "name": "Simple Greeting Bypass",
+      "phase": "Completed (Stage 6.2B)",
+      "status": "PASS",
+      "execution_category": ["READ_ONLY_RUNTIME"],
+      "workflow_target": "TSvKBGpM9nK7eb3U",
+      "required_input": "Hello",
+      "target_chunks": "None (Bypasses DB)",
+      "expected_output": "Static greeting response without network inference",
+      "database_impact": "None (0 reads, 0 writes)",
+      "ollama_requirement": "None (0 embedding, 0 generation)",
+      "safety_controls": "Workflow inactive, runner bridge pinData",
+      "evidence_file": "scripts/stage6_2b_runtime_test_report.json",
+      "measured_duration_sec": 27.04,
+      "pass_fail_criteria": "Static greeting response returned; zero embedding; zero SQL; zero LLM."
+    },
+    {
+      "test_id": "TC-02",
+      "name": "Relevant Framework Query (Threshold Gating & Fallback)",
+      "phase": "Completed (Stage 6.2C)",
+      "status": "PASS",
+      "execution_category": ["READ_ONLY_RUNTIME"],
+      "workflow_target": "TSvKBGpM9nK7eb3U",
+      "required_input": "How do I practice Completion with Integrity when closing projects?",
+      "target_chunks": "Evaluated all 8 chunks; top framework (Chunk 30: 0.6216) and top voice (Chunk 32: 0.6034) fell below thresholds",
+      "expected_output": "Exact string: 'No documented coaching frameworks match this topic.'",
+      "database_impact": "Read-only (SELECT queries against knowledge_vault, 0 mutations)",
+      "ollama_requirement": "Embedding only (bge-m3:latest). Generation LLM strictly bypassed.",
+      "safety_controls": "Pre/postflight count assertions (8/2), workflow inactive",
+      "evidence_file": "scripts/stage6_2c_runtime_test_report.json",
+      "measured_duration_sec": 34.75,
+      "pass_fail_criteria": "Hard gate halts workflow before LLM; returns exact mandatory fallback string."
+    },
+    {
+      "test_id": "TC-03",
+      "name": "Relevant Communication / Style Query",
+      "phase": "Planned",
+      "status": "UNVERIFIED_PENDING_CALIBRATION",
+      "execution_category": ["READ_ONLY_RUNTIME", "LLM_RUNTIME", "MANUAL_REVIEW"],
+      "workflow_target": "TSvKBGpM9nK7eb3U",
+      "required_input": "How should I speak to an executive who feels overwhelmed by micromanagement?",
+      "target_chunks": "Targeting Voice Chunks 31 & 32 (TEST-SES-101)",
+      "calibration_requirement": "Voice similarity >= 0.65 required; Framework similarity may be < 0.70 or >= 0.70",
+      "database_impact": "Read-only (SELECT against knowledge_vault, 0 mutations)",
+      "ollama_requirement": "Required (bge-m3:latest embedding + llama3.2:1b generation)",
+      "safety_controls": "Pre-measurement calibration script first; pre/postflight count assertions (8/2)",
+      "estimated_runtime_sec": 85.0,
+      "pass_fail_criteria": "Voice stream returns >= 1 row with similarity >= 0.65; prompt Section B populated; response reflects Dr. Sara's style without hallucinated quotes."
+    },
+    {
+      "test_id": "TC-04",
+      "name": "Dual-Stream Qualifying Query (Framework + Voice)",
+      "phase": "Planned",
+      "status": "UNVERIFIED_PENDING_CALIBRATION",
+      "execution_category": ["READ_ONLY_RUNTIME", "LLM_RUNTIME", "MANUAL_REVIEW"],
+      "workflow_target": "TSvKBGpM9nK7eb3U",
+      "required_input": "How can an executive use the Table and Shoulder test to regulate cognitive load and avoid micromanaging?",
+      "target_chunks": "Targeting Framework Chunk 34 (TEST-SES-102) AND Voice Chunks 35/36/37 (TEST-SES-102) or 33 (TEST-SES-101)",
+      "calibration_requirement": "Simultaneous qualification mandatory: Framework >= 0.70 AND Voice >= 0.65",
+      "database_impact": "Read-only (SELECT against knowledge_vault, 0 mutations)",
+      "ollama_requirement": "Required (bge-m3:latest embedding + llama3.2:1b generation)",
+      "safety_controls": "Pre-measurement calibration script first; pre/postflight count assertions (8/2)",
+      "estimated_runtime_sec": 85.0,
+      "pass_fail_criteria": "Framework count >= 1 (>= 0.70) AND Voice count >= 1 (>= 0.65); total_qualifying_chunks >= 2; prompt contains Section A and Section B; response grounded in both."
+    },
+    {
+      "test_id": "TC-05",
+      "name": "Framework-Only Retrieval (Partial Retrieval Demonstration)",
+      "phase": "Completed Baseline (Candidate Query 1 in Task 5)",
+      "status": "PASS_PROVEN_ON_CHUNK_30",
+      "execution_category": ["READ_ONLY_RUNTIME", "LLM_RUNTIME"],
+      "workflow_target": "TSvKBGpM9nK7eb3U",
+      "proven_input_query": "How does an executive use Completion with Integrity and binary exit criteria to eliminate micromanagement?",
+      "proven_target_chunk": "Framework Chunk 30 (TEST-SES-101), Similarity: 0.7514",
+      "unverified_alternative_query": "Define the structured steps and operational mechanisms of the Table and Shoulder test (Targeting Chunk 34, UNVERIFIED)",
+      "expected_retrieval": "Framework count = 1 (>= 0.70); Voice count = 0 (< 0.65)",
+      "database_impact": "Read-only (SELECT against knowledge_vault, 0 mutations)",
+      "ollama_requirement": "Required (bge-m3:latest embedding + llama3.2:1b generation)",
+      "safety_controls": "Pre/postflight count assertions (8/2), runner bridge pinData",
+      "measured_duration_sec": 84.64,
+      "evidence_file": "scripts/positive_retrieval_runtime_test_report.json",
+      "pass_fail_criteria": "Framework stream returns >= 1 row; voice stream returns 0 rows; prompt Section B empty; response grounded in Chunk 30."
+    },
+    {
+      "test_id": "TC-06",
+      "name": "Voice-Only Retrieval (Partial Retrieval Demonstration)",
+      "phase": "Planned",
+      "status": "UNVERIFIED_PENDING_CALIBRATION",
+      "execution_category": ["READ_ONLY_RUNTIME", "LLM_RUNTIME", "MANUAL_REVIEW"],
+      "workflow_target": "TSvKBGpM9nK7eb3U",
+      "required_input": "How does Dr. Sara describe protecting cognitive bandwidth and executive energy?",
+      "target_chunks": "Targeting Voice Chunk 33 (TEST-SES-101: 'Protect your cognitive bandwidth')",
+      "calibration_requirement": "Voice similarity >= 0.65 AND Framework similarity < 0.70",
+      "database_impact": "Read-only (SELECT against knowledge_vault, 0 mutations)",
+      "ollama_requirement": "Required (bge-m3:latest embedding + llama3.2:1b generation)",
+      "safety_controls": "Pre-measurement calibration script first; pre/postflight count assertions (8/2)",
+      "estimated_runtime_sec": 85.0,
+      "pass_fail_criteria": "Voice count >= 1 (>= 0.65); Framework count = 0 (< 0.70); prompt Section A empty; response reflects Dr. Sara's style without inventing frameworks."
+    },
+    {
+      "test_id": "TC-07",
+      "name": "Completely Unrelated Query (Zero Results Gate)",
+      "phase": "Planned (Mechanism Proven in TC-02)",
+      "status": "PENDING_EXECUTION",
+      "execution_category": ["READ_ONLY_RUNTIME"],
+      "workflow_target": "TSvKBGpM9nK7eb3U",
+      "required_input": "What is the optimal fertilizer ratio for growing hydroponic tomatoes in winter?",
+      "target_chunks": "All 8 chunks (Expected similarity < 0.30 across all)",
+      "expected_output": "Exact string: 'No documented coaching frameworks match this topic.'",
+      "database_impact": "Read-only (SELECT against knowledge_vault, 0 mutations)",
+      "ollama_requirement": "Embedding only (bge-m3:latest). Generation LLM bypassed.",
+      "safety_controls": "Pre/postflight count assertions (8/2)",
+      "estimated_runtime_sec": 35.0,
+      "pass_fail_criteria": "Framework count = 0, Voice count = 0; Hard Gate evaluates FALSE; Ollama Grounded Generator NOT executed; exact fallback string returned."
+    },
+    {
+      "test_id": "TC-08",
+      "name": "Framework Threshold Boundary Rejection (< 0.70)",
+      "phase": "Planned",
+      "status": "PENDING_VERIFICATION",
+      "execution_category": ["STATIC_ONLY", "READ_ONLY_RUNTIME"],
+      "workflow_target": "TSvKBGpM9nK7eb3U",
+      "evidence_separation": {
+        "static_proof": "Audit of Retrieve Framework Stream SQL parameter: WHERE stream_type = 'framework' AND (1 - (embedding <=> $1::vector)) >= 0.70 LIMIT 2",
+        "runtime_proof": "Execution with query yielding candidate similarities between 0.00 and 0.6999, proving 0 rows returned from SQL"
+      },
+      "database_impact": "Read-only (SELECT against knowledge_vault, 0 mutations)",
+      "ollama_requirement": "Static: None. Runtime: Embedding only.",
+      "estimated_runtime_sec": 35.0,
+      "pass_fail_criteria": "Static: SQL text contains hard >= 0.70 predicate. Runtime: Candidates < 0.70 are excluded before application aggregation."
+    },
+    {
+      "test_id": "TC-09",
+      "name": "Voice Threshold Boundary Rejection (< 0.65)",
+      "phase": "Planned",
+      "status": "PENDING_VERIFICATION",
+      "execution_category": ["STATIC_ONLY", "READ_ONLY_RUNTIME"],
+      "workflow_target": "TSvKBGpM9nK7eb3U",
+      "evidence_separation": {
+        "static_proof": "Audit of Retrieve Voice Stream SQL parameter: WHERE stream_type = 'voice_sample' AND (1 - (embedding <=> $1::vector)) >= 0.65 LIMIT 2",
+        "runtime_proof": "Empirically observed in Task 5: Chunk 32 scored 0.6241 and was strictly excluded by this SQL predicate"
+      },
+      "database_impact": "Read-only (SELECT against knowledge_vault, 0 mutations)",
+      "ollama_requirement": "Static: None. Runtime: Embedding only.",
+      "estimated_runtime_sec": 35.0,
+      "pass_fail_criteria": "Static: SQL text contains hard >= 0.65 predicate. Runtime: Candidates < 0.65 are excluded before application aggregation."
+    },
+    {
+      "test_id": "TC-10",
+      "name": "Invalid Embedding Vector Rejection",
+      "phase": "Planned",
+      "status": "STATIC_VERIFIED_UNIT_TEST_RECOMMENDED",
+      "execution_category": ["STATIC_ONLY"],
+      "workflow_target": "TSvKBGpM9nK7eb3U (Validate Query Vector)",
+      "actual_node_behavior": {
+        "input_structure": "Receives $input.first().json.embedding from Ollama Query Embedder",
+        "dimension_check": "asserts embedding.length === 1024",
+        "finite_number_check": "loops through 1024 elements and asserts typeof val === 'number' && Number.isFinite(val)",
+        "halting_behavior": "throws Error, preventing execution of downstream Retrieve Framework Stream and Retrieve Voice Stream nodes",
+        "live_prompt_injection_feasibility": "BLOCKED: Ollama bge-m3 never emits malformed vectors for text prompts. Supplying a malformed vector requires mocking the HTTP response."
+      },
+      "recommended_verification_method": "Isolated Node.js unit test of the Validate Query Vector code snippet with mock malformed inputs (null, length 512, NaN, Inf)",
+      "database_impact": "None (PostgreSQL connection never opened)",
+      "ollama_requirement": "None",
+      "pass_fail_criteria": "Validate Query Vector code throws descriptive exception on invalid input; downstream SQL nodes never executed."
+    }
+  ]
+}

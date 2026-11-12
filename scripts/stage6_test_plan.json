@@ -1,0 +1,219 @@
+{
+  "project": "GenX Leadership Academy Agentic RAG",
+  "stage": "Stage 6 — Bounded Dual-Stream Gated Retrieval",
+  "workflow_file": "workflows/gated_retrieval.json",
+  "created_at": "2026-11-12T16:37:00Z",
+  "status": "PREPARED_FOR_REVIEW",
+  "execution_policy": "DO_NOT_EXECUTE_UNTIL_USER_APPROVAL",
+  "target_database": {
+    "host": "genx-postgres",
+    "port": 5432,
+    "database": "genx_rag",
+    "table": "knowledge_vault",
+    "vector_dimensions": 1024,
+    "framework_threshold": 0.70,
+    "voice_threshold": 0.65
+  },
+  "ollama_services": {
+    "embedding_model": "bge-m3:latest",
+    "llm_model": "llama3.2:1b",
+    "embed_endpoint": "/api/embeddings",
+    "generate_endpoint": "/api/generate"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-01",
+      "name": "Simple Greeting Bypass",
+      "input_query": "Hello",
+      "expected_classification": {
+        "is_greeting": true,
+        "branch": "Static Greeting Response"
+      },
+      "expected_operations": {
+        "embedding_called": false,
+        "sql_called": false,
+        "llm_invoked": false
+      },
+      "expected_response_contains": "Hello! I am Dr. Sara Hegy's executive coaching assistant",
+      "verification_criteria": "Immediate static response; zero network calls to Ollama embedding or PostgreSQL.",
+      "executed": false
+    },
+    {
+      "test_id": "TC-02",
+      "name": "Relevant Framework Query (Completion with Integrity)",
+      "input_query": "How do I practice Completion with Integrity when closing projects?",
+      "expected_classification": {
+        "is_greeting": false,
+        "branch": "Ollama Query Embedder"
+      },
+      "expected_operations": {
+        "embedding_called": true,
+        "sql_called": true,
+        "llm_invoked": true
+      },
+      "expected_retrieval": {
+        "framework_count_min": 1,
+        "target_framework": "Completion with Integrity",
+        "similarity_threshold": 0.70
+      },
+      "verification_criteria": "Framework record retrieved with similarity >= 0.70; response grounded in conceptual definition.",
+      "executed": false
+    },
+    {
+      "test_id": "TC-03",
+      "name": "Relevant Communication / Style Query",
+      "input_query": "How should I speak to an executive who feels overwhelmed by micromanagement?",
+      "expected_classification": {
+        "is_greeting": false,
+        "branch": "Ollama Query Embedder"
+      },
+      "expected_operations": {
+        "embedding_called": true,
+        "sql_called": true,
+        "llm_invoked": true
+      },
+      "expected_retrieval": {
+        "voice_count_min": 1,
+        "target_voice_session": "TEST-SES-101",
+        "similarity_threshold": 0.65
+      },
+      "verification_criteria": "Voice chunk retrieved with similarity >= 0.65; response reflects Dr. Sara Hegy's cadence.",
+      "executed": false
+    },
+    {
+      "test_id": "TC-04",
+      "name": "Dual-Stream Qualifying Query (Framework + Voice)",
+      "input_query": "How can an executive use the Table and Shoulder test to regulate cognitive load and avoid micromanaging?",
+      "expected_classification": {
+        "is_greeting": false,
+        "branch": "Ollama Query Embedder"
+      },
+      "expected_operations": {
+        "embedding_called": true,
+        "sql_called": true,
+        "llm_invoked": true
+      },
+      "expected_retrieval": {
+        "framework_count_min": 1,
+        "voice_count_min": 1,
+        "total_qualifying_chunks_min": 2
+      },
+      "verification_criteria": "Both framework (>= 0.70) and voice (>= 0.65) records retrieved; generation prompt incorporates both Section A and Section B.",
+      "executed": false
+    },
+    {
+      "test_id": "TC-05",
+      "name": "Framework-Only Retrieval (Synthetic High Framework / Low Voice)",
+      "input_query": "Define the structured steps and operational mechanisms of the Table and Shoulder test.",
+      "expected_classification": {
+        "is_greeting": false,
+        "branch": "Ollama Query Embedder"
+      },
+      "expected_operations": {
+        "embedding_called": true,
+        "sql_called": true,
+        "llm_invoked": true
+      },
+      "expected_retrieval": {
+        "framework_count": 1,
+        "voice_count": 0
+      },
+      "verification_criteria": "Framework retrieved; voice stream empty; generation prompt clearly notes absence of voice samples.",
+      "executed": false
+    },
+    {
+      "test_id": "TC-06",
+      "name": "Voice-Only Retrieval (Style Query Without Specific Framework)",
+      "input_query": "How does Dr. Sara describe protecting cognitive bandwidth and executive energy?",
+      "expected_classification": {
+        "is_greeting": false,
+        "branch": "Ollama Query Embedder"
+      },
+      "expected_operations": {
+        "embedding_called": true,
+        "sql_called": true,
+        "llm_invoked": true
+      },
+      "expected_retrieval": {
+        "framework_count": 0,
+        "voice_count_min": 1
+      },
+      "verification_criteria": "Voice samples retrieved; framework stream empty; generation notes partial evidence limitation.",
+      "executed": false
+    },
+    {
+      "test_id": "TC-07",
+      "name": "Completely Unrelated Query (Zero Results Gate)",
+      "input_query": "What is the optimal fertilizer ratio for growing hydroponic tomatoes in winter?",
+      "expected_classification": {
+        "is_greeting": false,
+        "branch": "Ollama Query Embedder"
+      },
+      "expected_operations": {
+        "embedding_called": true,
+        "sql_called": true,
+        "llm_invoked": false
+      },
+      "expected_retrieval": {
+        "framework_count": 0,
+        "voice_count": 0,
+        "total_qualifying_chunks": 0
+      },
+      "expected_response_exact": "No documented coaching frameworks match this topic.",
+      "verification_criteria": "Both SQL queries return 0 rows above threshold; Hard Gate halts workflow before generation LLM; returns exact mandatory fallback string.",
+      "executed": false
+    },
+    {
+      "test_id": "TC-08",
+      "name": "Framework Threshold Boundary Rejection (< 0.70)",
+      "input_query": "What are general agile software sprint estimation metrics?",
+      "expected_classification": {
+        "is_greeting": false,
+        "branch": "Ollama Query Embedder"
+      },
+      "expected_operations": {
+        "embedding_called": true,
+        "sql_called": true
+      },
+      "expected_retrieval": {
+        "framework_count": 0
+      },
+      "verification_criteria": "SQL similarity filter (1 - distance >= 0.70) strictly drops candidate framework chunks scoring < 0.70.",
+      "executed": false
+    },
+    {
+      "test_id": "TC-09",
+      "name": "Voice Threshold Boundary Rejection (< 0.65)",
+      "input_query": "Explain quantum computing qubit superposition.",
+      "expected_classification": {
+        "is_greeting": false,
+        "branch": "Ollama Query Embedder"
+      },
+      "expected_operations": {
+        "embedding_called": true,
+        "sql_called": true
+      },
+      "expected_retrieval": {
+        "voice_count": 0
+      },
+      "verification_criteria": "SQL similarity filter (1 - distance >= 0.65) strictly drops voice chunks scoring < 0.65.",
+      "executed": false
+    },
+    {
+      "test_id": "TC-10",
+      "name": "Invalid Embedding Vector Rejection",
+      "input_query": "TRIGGER_MALFORMED_VECTOR_MOCK",
+      "expected_classification": {
+        "is_greeting": false,
+        "branch": "Ollama Query Embedder"
+      },
+      "expected_operations": {
+        "embedding_called": true,
+        "sql_called": false,
+        "llm_invoked": false
+      },
+      "verification_criteria": "Validate Query Vector node catches missing, truncated, or non-finite vector before issuing SQL queries.",
+      "executed": false
+    }
+  ]
+}

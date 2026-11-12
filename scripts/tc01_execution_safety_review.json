@@ -1,0 +1,103 @@
+{
+  "stage": "Stage 6.2B — TC-01 Execution Safety Review",
+  "review_timestamp": "2026-11-12T18:26:30Z",
+  "script_under_review": "scripts/execute_tc01.py",
+  "tc01_executed": false,
+  "verification_checklist": {
+    "1_targets_only_retrieval_workflow": {
+      "verified": true,
+      "workflow_id": "TSvKBGpM9nK7eb3U",
+      "command": "docker exec -e N8N_RUNNERS_BROKER_PORT=5699 genx-n8n n8n execute --id=TSvKBGpM9nK7eb3U",
+      "details": "Targets exclusively the imported Bounded Dual-Stream Gated Retrieval workflow."
+    },
+    "2_does_not_activate_workflow": {
+      "verified": true,
+      "active_before": false,
+      "active_after": false,
+      "mechanism": "CLI command 'n8n execute' executes workflows in 'cli' executionMode using findCliWorkflowStart without modifying or checking workflow active flag. Post-execution assertion confirms active: false."
+    },
+    "3_does_not_execute_ingestion_workflow": {
+      "verified": true,
+      "ingestion_workflow_id": "IlBw4RRELuh02Akm",
+      "details": "Ingestion workflow is neither targeted nor executed."
+    },
+    "4_supported_execution_mechanism": {
+      "verified": true,
+      "binary": "n8n execute",
+      "version": "2.47.4",
+      "cli_source_inspected": "/usr/local/lib/node_modules/n8n/dist/commands/execute.js",
+      "port_collision_resolution": "Primary n8n web process listens on task broker port 5679. Setting N8N_RUNNERS_BROKER_PORT=5699 isolates CLI execution to avoid EADDRINUSE.",
+      "details": "Supported native n8n CLI command. Runs workflow directly through WorkflowRunner."
+    },
+    "5_submits_exact_query_hello": {
+      "verified": true,
+      "input_query": "Hello",
+      "mechanism": "Node 'Query Input & Normalizer' falls back to default test query 'Hello' when triggered via manualTrigger in CLI mode. Trimmed query output is exactly 'Hello'."
+    },
+    "6_captures_execution_evidence": {
+      "verified": true,
+      "captures_execution_id": true,
+      "captures_run_data": true,
+      "captures_output_json": true,
+      "raw_evidence_destination": "scripts/tc01_execution_result.json",
+      "report_destination": "scripts/stage6_2b_runtime_test_report.json"
+    },
+    "7_verifies_zero_external_requests": {
+      "verified": true,
+      "prohibited_nodes_checked": [
+        "Ollama Query Embedder",
+        "Validate Query Vector",
+        "Retrieve Framework Stream",
+        "Retrieve Voice Stream",
+        "Merge Retrieval Streams",
+        "Aggregate & Gate Results",
+        "Hard Gate (Has Results?)",
+        "Return Zero Result Output",
+        "Format Grounded Prompt",
+        "Ollama Grounded Generator",
+        "Format Final Response"
+      ],
+      "prohibited_nodes_assertion": "assert len(executed_prohibited) == 0",
+      "metadata_assertions": [
+        "gate_status == 'BYPASS_GREETING'",
+        "embedding_called == false",
+        "sql_called == false",
+        "llm_invoked == false"
+      ]
+    },
+    "8_performs_no_database_writes": {
+      "verified": true,
+      "pre_db_check": "knowledge_vault = 8, rejected_meetings = 2",
+      "post_db_check": "assert counts_pre == counts_post",
+      "mutations_detected": 0
+    },
+    "9_preserves_workflow_config_and_credentials": {
+      "verified": true,
+      "workflow_modified": false,
+      "credentials_modified": false
+    }
+  },
+  "exact_execution_method": "docker exec -e N8N_RUNNERS_BROKER_PORT=5699 genx-n8n n8n execute --id=TSvKBGpM9nK7eb3U",
+  "port_collision_finding": {
+    "issue": "n8n Task Broker's port 5679 is in use by running genx-n8n daemon",
+    "root_cause": "CLI command execute.js sets this.needsTaskRunner = true, attempting to bind to default broker port 5679",
+    "investigation": "Inspected /usr/local/lib/node_modules/n8n/node_modules/@n8n/config/dist/configs/runners.config.js and confirmed N8N_RUNNERS_BROKER_PORT controls broker port binding",
+    "solution": "Set N8N_RUNNERS_BROKER_PORT=5699 in docker exec environment for the CLI execution subshell"
+  },
+  "files_inspected": [
+    "scripts/execute_tc01.py",
+    "workflows/gated_retrieval.json",
+    "workflows/live_exported_retrieval_wf.json",
+    "/usr/local/lib/node_modules/n8n/dist/commands/execute.js",
+    "/usr/local/lib/node_modules/n8n/dist/task-runners/task-broker/task-broker-server.js",
+    "/usr/local/lib/node_modules/n8n/node_modules/@n8n/config/dist/configs/runners.config.js"
+  ],
+  "files_changed": [
+    "scripts/execute_tc01.py",
+    "scripts/backups/execute_tc01_pre_broker_port_fix.py",
+    "scripts/tc01_execution_safety_review.json"
+  ],
+  "blockers": [],
+  "safety_determination": "SAFE_TO_EXECUTE_UPON_APPROVAL",
+  "execution_confirmation": "CONFIRMED: TC-01 was NOT executed. The workflow remains inactive, no executions have been launched, and the database remains 100% in its baseline state."
+}

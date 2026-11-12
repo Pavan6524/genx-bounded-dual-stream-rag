@@ -1,0 +1,88 @@
+{
+  "stage": "Stage 6.2A.2 — Final Import Command Compatibility Check",
+  "audit_timestamp": "2026-11-12T17:57:00Z",
+  "status": "COMPATIBILITY_VERIFIED",
+  "exact_import_command": "docker exec genx-n8n n8n import:workflow --input=/workflows/gated_retrieval.json --projectId=w24y2iBD8xkaEi8K --activeState=false",
+  "cli_binary_and_version": {
+    "container": "genx-n8n",
+    "n8n_version": "2.47.4",
+    "command_path": "/usr/local/lib/node_modules/n8n/dist/commands/import/workflow.js"
+  },
+  "supported_options_audit": {
+    "--input": {
+      "supported": true,
+      "type": "string",
+      "actual_value": "/workflows/gated_retrieval.json",
+      "verification": "Confirmed: mounted in container from host ./workflows/gated_retrieval.json; single-file path verified."
+    },
+    "--projectId": {
+      "supported": true,
+      "type": "string",
+      "actual_value": "w24y2iBD8xkaEi8K",
+      "verification": "Confirmed in workflow.js Zod schema (z.string().optional()); matches owner project ID 'w24y2iBD8xkaEi8K' from live ingestion workflow metadata."
+    },
+    "--activeState": {
+      "supported": true,
+      "type": "enum ['false', 'fromJson']",
+      "actual_value": "false",
+      "default_value": "false",
+      "verification": "Confirmed in workflow.js Zod schema: z.enum(['false', 'fromJson']).default('false'). In regular deployment mode, n8n explicitly forbids 'fromJson' and requires 'false'."
+    }
+  },
+  "project_id_targeting": {
+    "target_project_id": "w24y2iBD8xkaEi8K",
+    "owner": "Pavan Guduru <pavang6524@gmail.com>",
+    "source_of_truth": "Live workflow shared array (workflow:owner)",
+    "correct_targeting": true
+  },
+  "single_workflow_targeting": {
+    "targets_only_retrieval_file": true,
+    "input_path": "/workflows/gated_retrieval.json",
+    "separate_flag_used": false,
+    "directory_import_used": false
+  },
+  "ingestion_workflow_preservation": {
+    "ingestion_workflow_id": "IlBw4RRELuh02Akm",
+    "preserved_in_backup": "workflows/backups/n8n_state_backup_pre_stage6_2a_20261112_173037.json",
+    "preserved_in_live_n8n": true,
+    "collision_impossible": "workflows/gated_retrieval.json contains no top-level 'id' property. n8n CLI creates a new unique workflow ID upon import."
+  },
+  "inactive_state_mechanism": {
+    "cli_flag": "--activeState=false",
+    "schema_default": "false",
+    "container_enforcement": "ImportService.importWorkflows receives { activeState: 'false' }, setting active column to false in PostgreSQL/SQLite.",
+    "post_import_assertion": "assert live_export.get('active') is False"
+  },
+  "post_import_export_and_comparison": {
+    "export_command": "docker exec genx-n8n n8n export:workflow --id=<newly_assigned_id>",
+    "local_destination": "workflows/live_exported_retrieval_wf.json",
+    "comparison_scope": [
+      "Exact 16 node count",
+      "Identical node IDs and names",
+      "Identical node types and versions",
+      "Identical connections topology",
+      "SQL threshold >= 0.70 and LIMIT 2 on framework stream",
+      "SQL threshold >= 0.65 and LIMIT 2 on voice stream",
+      "alwaysOutputData: true on both SQL nodes",
+      "PostgreSQL credential name 'Postgres account'",
+      "Ollama endpoint expressions $env.OLLAMA_BASE_URL",
+      "Greeting branch bypasses embedding/SQL/LLM",
+      "Zero-result branch halts at exact string fallback",
+      "Active state confirmed false"
+    ]
+  },
+  "validation_results": {
+    "cli_help_confirmed": true,
+    "source_code_zod_schema_confirmed": true,
+    "dry_run_precondition_check": "PASS (executed via python scripts/import_retrieval_workflow.py --check-only)"
+  },
+  "changes_made": [
+    "Added automated Stage 6.2A import report generation (scripts/stage6_2a_import_report.json) to verify_and_compare() in scripts/import_retrieval_workflow.py when executed.",
+    "Created scripts/stage6_2a_2_cli_compatibility_report.json documenting CLI compatibility and parameter verification."
+  ],
+  "execution_state": {
+    "import_executed": false,
+    "workflow_active": false,
+    "database_modified": false
+  }
+}

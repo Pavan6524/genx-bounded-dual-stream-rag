@@ -1,0 +1,61 @@
+{
+  "status": "PASS",
+  "audit_timestamp": "2026-11-12T15:42:00Z",
+  "framework_stream": {
+    "total_framework_chunks": 2,
+    "sessions": {
+      "TEST-SES-101": {
+        "framework_name": "Completion with Integrity",
+        "source_timestamps": [
+          "00:01:55",
+          "00:44:10",
+          "00:44:40"
+        ],
+        "definition_len": 274,
+        "mechanism_len": 402,
+        "application_len": 99
+      },
+      "TEST-SES-102": {
+        "framework_name": "Table and Shoulder Test",
+        "source_timestamps": [
+          "00:00:55",
+          "00:02:00"
+        ],
+        "definition_len": 75,
+        "mechanism_len": 32,
+        "application_len": 43
+      }
+    },
+    "modifications_applied": "Updated source_timestamps arrays only",
+    "content_preserved": true
+  },
+  "voice_stream": {
+    "total_voice_chunks": 6,
+    "sha256": "54793484dc65fe2ef55f0cc2fe0fb96e03c69e8e8027b8e2213d59618553f4f0",
+    "byte_for_byte_preserved": true,
+    "chunk_counts_by_session": {
+      "TEST-SES-101": 3,
+      "TEST-SES-102": 3,
+      "TEST-SES-103": 0,
+      "TEST-SES-104": 0
+    }
+  },
+  "rejection_isolation": {
+    "TEST-SES-103": {
+      "framework_chunks": 0,
+      "voice_chunks": 0,
+      "status": "REJECTED_ISOLATED"
+    },
+    "TEST-SES-104": {
+      "framework_chunks": 0,
+      "voice_chunks": 0,
+      "status": "REJECTED_ISOLATED"
+    }
+  },
+  "safety_checks": {
+    "database_writes": 0,
+    "embeddings_generated": 0,
+    "workflow_executions": 0,
+    "production_modifications": 0
+  }
+}

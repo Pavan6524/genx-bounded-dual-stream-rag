@@ -1,0 +1,114 @@
+[
+  {
+    "session_id": "TEST-SES-101",
+    "status": "EXTRACTED",
+    "meeting_type": "Client Coaching",
+    "chunk_count": 3,
+    "voice_chunks": [
+      {
+        "session_id": "TEST-SES-101",
+        "stream_type": "voice_sample",
+        "content": "Look, Mark, micromanagement is almost never an ego problem. It is an information architecture breakdown. When you step back in, you're not doing it because you crave control; you're doing it because your system is bleeding signal. That friction is burning out your nervous system.",
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "session_id": "TEST-SES-101",
+          "source_timestamps": [
+            "00:00:45"
+          ],
+          "char_count": 280,
+          "turn_count": 1
+        }
+      },
+      {
+        "session_id": "TEST-SES-101",
+        "stream_type": "voice_sample",
+        "content": "The reality is, top performers don't fail because of capability; they fail against ambiguous standards. In our practice, we use a framework called Completion with Integrity. Before anyone starts a strategic initiative, you define the binary exit criteria upfront. You stop asking 'How is this going?' and start enforcing pre-agreed handoff constraints. When clarity goes up, surveillance drops to zero.",
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "session_id": "TEST-SES-101",
+          "source_timestamps": [
+            "00:01:55"
+          ],
+          "char_count": 402,
+          "turn_count": 1
+        }
+      },
+      {
+        "session_id": "TEST-SES-101",
+        "stream_type": "voice_sample",
+        "content": "Exactly. Protect your cognitive bandwidth. Let the architecture do the quality control, not your adrenaline. We will audit the feedback loop next Tuesday.",
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "session_id": "TEST-SES-101",
+          "source_timestamps": [
+            "00:44:40"
+          ],
+          "char_count": 154,
+          "turn_count": 1
+        }
+      }
+    ]
+  },
+  {
+    "session_id": "TEST-SES-102",
+    "status": "EXTRACTED",
+    "meeting_type": "Client Coaching",
+    "chunk_count": 3,
+    "voice_chunks": [
+      {
+        "session_id": "TEST-SES-102",
+        "stream_type": "voice_sample",
+        "content": "The reality is that top performers don't decay overnight without structural friction. Before you schedule an uncomfortable confrontation, we run the Table and Shoulder Test. You have to isolate two distinct variables: neurological load versus operational drift.",
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "session_id": "TEST-SES-102",
+          "source_timestamps": [
+            "00:00:55"
+          ],
+          "char_count": 261,
+          "turn_count": 1
+        }
+      },
+      {
+        "session_id": "TEST-SES-102",
+        "stream_type": "voice_sample",
+        "content": "Has the company's operational velocity outpaced the scope of the seat he was hired into? Sit across from him as an architect, not an interrogator. Your primary diagnostic question should be: 'Where is the internal system fighting you right now?' If the breakdown is structural, we redesign the container. If the breakdown is capacity, we make a clean, dignified transition. No passive waiting.",
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "session_id": "TEST-SES-102",
+          "source_timestamps": [
+            "00:02:00"
+          ],
+          "char_count": 393,
+          "turn_count": 1
+        }
+      },
+      {
+        "session_id": "TEST-SES-102",
+        "stream_type": "voice_sample",
+        "content": "When you regulate your own state first, you give them the safety to acknowledge reality. Run the diagnosis tomorrow and report back.",
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "session_id": "TEST-SES-102",
+          "source_timestamps": [
+            "00:42:45"
+          ],
+          "char_count": 132,
+          "turn_count": 1
+        }
+      }
+    ]
+  },
+  {
+    "session_id": "TEST-SES-103",
+    "status": "SKIPPED_REJECTED",
+    "meeting_type": "Internal Operations",
+    "voice_chunks": []
+  },
+  {
+    "session_id": "TEST-SES-104",
+    "status": "SKIPPED_REJECTED",
+    "meeting_type": "Sales Discovery",
+    "voice_chunks": []
+  }
+]

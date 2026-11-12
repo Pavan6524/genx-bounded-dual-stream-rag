@@ -1,0 +1,76 @@
+{
+  "stage": "Task 5 — Prepare Positive Retrieval Runtime Test",
+  "status": "PREPARED_AWAITING_APPROVAL",
+  "candidate_query": "How does an executive use Completion with Integrity and binary exit criteria to eliminate micromanagement?",
+  "measured_baseline_similarity": {
+    "top_framework_chunk_id": 30,
+    "top_framework_session_id": "TEST-SES-101",
+    "top_framework_similarity": 0.7514,
+    "framework_threshold": 0.7,
+    "framework_qualifies": true,
+    "top_voice_chunk_id": 32,
+    "top_voice_session_id": "TEST-SES-101",
+    "top_voice_similarity": 0.6241,
+    "voice_threshold": 0.65,
+    "voice_qualifies": false
+  },
+  "runner_inspection": {
+    "target_workflow_id": "TSvKBGpM9nK7eb3U",
+    "ingestion_workflow_id": "IlBw4RRELuh02Akm",
+    "runner_script": "scripts/execute_tc02.py",
+    "bridge_script": "scripts/tc_runner_bridge.js",
+    "backup_path": "scripts/backups/execute_tc02_pre_query_override_20261112_201000.py",
+    "query_override_supported": true,
+    "query_override_mechanism": "CLI argument (--query \"<text>\") or environment variable GENX_TEST_QUERY",
+    "workflow_modification_required": false,
+    "bridge_injection_safety": "PinData injection into manual trigger 'When clicking ‘Execute workflow’’ via NODE_OPTIONS preload",
+    "preflight_checks_preserved": [
+      "knowledge_vault count == 8",
+      "rejected_meetings count == 2",
+      "target workflow active == false",
+      "target workflow nodes == 16",
+      "ingestion workflow untouched and active == false"
+    ],
+    "postflight_checks_preserved": [
+      "knowledge_vault count == 8 (zero mutations)",
+      "rejected_meetings count == 2 (zero mutations)",
+      "target workflow active == false"
+    ],
+    "evidence_preservation": [
+      "scripts/tc02_raw_stdout.log",
+      "scripts/tc02_raw_stderr.log",
+      "scripts/tc02_execution_result.json",
+      "scripts/stage6_2c_runtime_test_report.json (or dedicated report)",
+      "scripts/tc02_execution_failure_diagnosis.json (on non-zero exit)"
+    ],
+    "single_execution_contract": "Strictly single subprocess run; zero retry loops; fails fast on error"
+  },
+  "expected_workflow_behavior": {
+    "executed_nodes": [
+      "When clicking ‘Execute workflow’",
+      "Query Input & Normalizer",
+      "Greeting Classifier",
+      "Greeting Router",
+      "Ollama Query Embedder",
+      "Validate Query Vector",
+      "Retrieve Framework Stream",
+      "Retrieve Voice Stream",
+      "Merge Retrieval Streams",
+      "Aggregate & Gate Results",
+      "Hard Gate (Has Results?)",
+      "Format Grounded Prompt",
+      "Ollama Grounded Generator",
+      "Format Final Response"
+    ],
+    "prohibited_nodes": [
+      "Static Greeting Response",
+      "Return Zero Result Output"
+    ],
+    "expected_framework_results": 1,
+    "expected_voice_results": 0,
+    "hard_gate_evaluation": true,
+    "grounded_generation_executed": true,
+    "voice_fabrication_prevented": true
+  },
+  "prepared_execution_command": "python scripts/execute_tc02.py --query \"How does an executive use Completion with Integrity and binary exit criteria to eliminate micromanagement?\""
+}

@@ -1,0 +1,94 @@
+{
+  "stage": "Stage 6.2C.1 — TC-02 Workflow Runner Bridge Implementation & Safety Audit",
+  "review_timestamp": "2026-11-12T18:50:00Z",
+  "status": "READY_FOR_APPROVAL",
+  "target_workflow": {
+    "id": "TSvKBGpM9nK7eb3U",
+    "name": "Bounded Dual-Stream Gated Retrieval",
+    "project_id": "w24y2iBD8xkaEi8K",
+    "active_state": false,
+    "node_count": 16
+  },
+  "ingestion_workflow": {
+    "id": "IlBw4RRELuh02Akm",
+    "name": "Ingestion Firewall & Dual-Stream Extraction (Runtime Test)",
+    "status": "UNTOUCHED"
+  },
+  "tc02_test_specification": {
+    "name": "Framework Retrieval Runtime Test",
+    "query": "How do I practice Completion with Integrity when closing projects?",
+    "expected_framework_match": {
+      "session_id": "TEST-SES-101",
+      "topic": "Completion with Integrity",
+      "threshold": ">= 0.70",
+      "limit": 2
+    },
+    "expected_voice_evaluation": {
+      "threshold": ">= 0.65",
+      "limit": 2
+    },
+    "expected_gate_status": "PASS",
+    "expected_generation_model": "llama3.2:1b"
+  },
+  "runtime_api_contract_verification": {
+    "n8n_version": "2.47.4",
+    "inspected_source_files": [
+      "/usr/local/lib/node_modules/n8n/dist/commands/execute.js",
+      "/usr/local/lib/node_modules/n8n/dist/workflow-runner.js"
+    ],
+    "verified_mechanisms": {
+      "execution_mode": "manual",
+      "pindata_resolution": "WorkflowRunner.prototype.resolvePinData(data) returns data.pinData when executionMode is 'manual'.",
+      "trigger_node": "When clicking ‘Execute workflow’ (manualTrigger v1) receives the pinned item containing { json: { query: '...' } }.",
+      "query_normalizer": "The downstream 'Query Input & Normalizer' node reads firstItem.json.query and normalizes the target coaching query.",
+      "task_broker_isolation": "N8N_RUNNERS_BROKER_PORT=5699 isolates secondary CLI execution process from main n8n web daemon (port 5679)."
+    }
+  },
+  "preflight_verification_results": {
+    "docker_services": {
+      "genx-n8n": "RUNNING (healthy)",
+      "genx-postgres": "RUNNING (healthy)"
+    },
+    "postgresql_counts": {
+      "knowledge_vault": 8,
+      "rejected_meetings": 2,
+      "verified": true
+    },
+    "workflow_active_state": {
+      "target_workflow_inactive": true,
+      "ingestion_workflow_untouched": true
+    },
+    "bridge_script_syntax": {
+      "file": "data/tc_runner_bridge.js",
+      "syntax_valid": true
+    }
+  },
+  "bridge_architecture_and_safety": {
+    "bridge_file_host": "d:/ProjectsD/genx-agentic-rag/data/tc_runner_bridge.js",
+    "bridge_file_container": "/data/tc_runner_bridge.js",
+    "injection_method": "Node.js standard preloading via NODE_OPTIONS=--require=/data/tc_runner_bridge.js",
+    "safety_guards": [
+      "Asserts data.workflowData.id === 'TSvKBGpM9nK7eb3U' at runtime; throws immediately if any other workflow is invoked.",
+      "Asserts GENX_TEST_QUERY environment variable is present and non-empty.",
+      "Injects query into manualTrigger via in-memory pinData without writing to workflow JSON or database.",
+      "Database row counts strictly asserted before and after execution (pre == post, mutations == 0).",
+      "Workflow remains inactive (active: false) before, during, and after execution."
+    ]
+  },
+  "proposed_execution_command": {
+    "runner_command": "python scripts/execute_tc02.py",
+    "underlying_container_command": "docker exec -e N8N_RUNNERS_BROKER_PORT=5699 -e NODE_OPTIONS=--require=/data/tc_runner_bridge.js -e GENX_TEST_QUERY=\"How do I practice Completion with Integrity when closing projects?\" genx-n8n n8n execute --id=TSvKBGpM9nK7eb3U"
+  },
+  "deliverables_produced": [
+    "scripts/tc_runner_bridge.js",
+    "data/tc_runner_bridge.js",
+    "scripts/execute_tc02.py",
+    "scripts/tc02_execution_safety_review.json"
+  ],
+  "safety_confirmation": {
+    "tc02_executed": false,
+    "workflow_modified": false,
+    "database_modified": false,
+    "ingestion_workflow_modified": false
+  }
+}

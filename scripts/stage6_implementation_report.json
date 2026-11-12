@@ -1,0 +1,201 @@
+{
+  "stage": "Stage 6 — Bounded Dual-Stream Gated Retrieval",
+  "status": "IMPLEMENTED_AND_STATICALLY_VALIDATED",
+  "workflow_file": "workflows/gated_retrieval.json",
+  "test_plan_file": "scripts/stage6_test_plan.json",
+  "timestamp": "2026-11-12T16:38:00Z",
+  "node_inventory": {
+    "total_nodes": 16,
+    "nodes": [
+      {
+        "index": 1,
+        "name": "When clicking ‘Execute workflow’",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "purpose": "Entry trigger for local workflow execution and testing."
+      },
+      {
+        "index": 2,
+        "name": "Query Input & Normalizer",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "purpose": "Normalizes incoming coaching query, trims whitespace, validates non-empty string."
+      },
+      {
+        "index": 3,
+        "name": "Greeting Classifier",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "purpose": "Deterministic regex classifier separating pure greetings from substantive questions."
+      },
+      {
+        "index": 4,
+        "name": "Greeting Router",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "purpose": "Branches execution: True -> Static Greeting Response; False -> Ollama Query Embedder."
+      },
+      {
+        "index": 5,
+        "name": "Static Greeting Response",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "purpose": "Returns static welcome greeting; 100% bypasses embedding, PostgreSQL, and LLM generation."
+      },
+      {
+        "index": 6,
+        "name": "Ollama Query Embedder",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "purpose": "Embeds query using local bge-m3:latest via POST /api/embeddings."
+      },
+      {
+        "index": 7,
+        "name": "Validate Query Vector",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "purpose": "Validates exact 1,024 finite float dimensions; formats vector string for PostgreSQL."
+      },
+      {
+        "index": 8,
+        "name": "Retrieve Framework Stream",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.4,
+        "purpose": "Dedicated PostgreSQL pgvector query for stream_type = 'framework' with similarity >= 0.70, LIMIT 2."
+      },
+      {
+        "index": 9,
+        "name": "Retrieve Voice Stream",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.4,
+        "purpose": "Dedicated PostgreSQL pgvector query for stream_type = 'voice_sample' with similarity >= 0.65, LIMIT 2."
+      },
+      {
+        "index": 10,
+        "name": "Merge Retrieval Streams",
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3,
+        "purpose": "Merges independent framework and voice streams using mode 'append'."
+      },
+      {
+        "index": 11,
+        "name": "Aggregate & Gate Results",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "purpose": "Aggregates records, filters empty rows from alwaysOutputData, computes framework_count and voice_count."
+      },
+      {
+        "index": 12,
+        "name": "Hard Gate (Has Results?)",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "purpose": "Evaluates has_qualifying_results (total_qualifying_chunks > 0). True -> Grounded Prompt; False -> Zero Result Output."
+      },
+      {
+        "index": 13,
+        "name": "Return Zero Result Output",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "purpose": "Emits mandatory fallback 'No documented coaching frameworks match this topic.'; bypasses generation LLM."
+      },
+      {
+        "index": 14,
+        "name": "Format Grounded Prompt",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "purpose": "Builds grounded prompt with Section A (Frameworks), Section B (Voice tone/phrasing), Section C (User query), Section D (Constraints)."
+      },
+      {
+        "index": 15,
+        "name": "Ollama Grounded Generator",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "purpose": "Generates grounded response via local llama3.2:1b at temperature 0.2, stream: false."
+      },
+      {
+        "index": 16,
+        "name": "Format Final Response",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "purpose": "Formats final response payload with response text, counts, and retrieval provenance metadata."
+      }
+    ]
+  },
+  "sql_query_details": {
+    "framework_stream": {
+      "stream_type": "framework",
+      "threshold_condition": "1 - (embedding <=> $1::vector) >= 0.70",
+      "order_by": "(embedding <=> $1::vector) ASC",
+      "limit": 2,
+      "fields_retrieved": ["id", "session_id", "stream_type", "content", "metadata", "similarity"],
+      "safe_parameter_replacement": "$1 via queryReplacement",
+      "always_output_data": true
+    },
+    "voice_stream": {
+      "stream_type": "voice_sample",
+      "threshold_condition": "1 - (embedding <=> $1::vector) >= 0.65",
+      "order_by": "(embedding <=> $1::vector) ASC",
+      "limit": 2,
+      "fields_retrieved": ["id", "session_id", "stream_type", "content", "metadata", "similarity"],
+      "safe_parameter_replacement": "$1 via queryReplacement",
+      "always_output_data": true
+    }
+  },
+  "greeting_bypass_verification": {
+    "verified": true,
+    "pattern": "^(hi|hello|hey|howdy|greetings|good\\s+(morning|afternoon|evening|day))(\\s+(there|dr\\.?\\s*sara(\\s+hegy)?|sara|coach))?$",
+    "bypasses_embedding": true,
+    "bypasses_sql": true,
+    "bypasses_llm_generation": true,
+    "positive_samples_tested": ["Hello", "Hi", "Hey", "Good morning", "Good afternoon", "Good evening", "Hello!", "Hi Dr. Sara", "Good morning Dr. Sara Hegy!"],
+    "negative_samples_tested": ["Hello, how do I apply the Table and Shoulder test?", "Hi, what is Completion with Integrity?", "Good morning, can you help me regulate my state as an executive?"]
+  },
+  "zero_result_llm_bypass_verification": {
+    "verified": true,
+    "gate_condition": "total_qualifying_chunks === 0",
+    "exact_fallback_string": "No documented coaching frameworks match this topic.",
+    "llm_generation_invoked": false,
+    "graph_isolation": "Terminal node 'Return Zero Result Output' has no outgoing connections to Ollama Grounded Generator"
+  },
+  "grounded_prompt_architecture": {
+    "section_a": "Retrieved Framework Evidence (Conceptual truth from knowledge_vault)",
+    "section_b": "Retrieved Voice Style Examples (Verbatim dialogue from Dr. Sara Hegy for tone/phrasing only)",
+    "section_c": "User Question",
+    "section_d": "Response Constraints (Strict bounding, no hallucinations, transparent partial retrieval communication)"
+  },
+  "database_safety": {
+    "mutations_present": false,
+    "read_only": true,
+    "existing_records_preserved": 8
+  },
+  "static_validation_results": {
+    "script": "scripts/validate_stage6_workflow.py",
+    "outcome": "PASS",
+    "checks_performed": [
+      "JSON syntax and structure valid",
+      "Exact node count: 16",
+      "Node names and IDs 100% unique",
+      "All connection targets and sources valid",
+      "Zero orphaned nodes",
+      "Postgres credential name: 'Postgres account'",
+      "Ollama base URL and models read from $env",
+      "SQL threshold >= 0.70 for framework enforced in SQL",
+      "SQL threshold >= 0.65 for voice enforced in SQL",
+      "Greeting branch 100% isolated from embedding and database",
+      "Zero-result branch 100% isolated from generation LLM",
+      "Read-only queries strictly confirmed (zero INSERT/UPDATE/DELETE)"
+    ]
+  },
+  "test_cases_status": {
+    "prepared_count": 10,
+    "executed_count": 0,
+    "reason": "Per instructions, execution paused after static validation pending user approval."
+  },
+  "files_created_or_modified": [
+    "workflows/gated_retrieval.json",
+    "scripts/stage6_test_plan.json",
+    "scripts/validate_stage6_workflow.py",
+    "scripts/stage6_implementation_report.json"
+  ],
+  "outstanding_issues": []
+}

@@ -1,0 +1,92 @@
+{
+  "audit": "Phase 2.1 Critical Item-Lineage Audit",
+  "workflow_id": "IlBw4RRELuh02Akm",
+  "workflow_file": "workflows/ingestion_firewall.json",
+  "timestamp": "2026-11-12T23:54:00Z",
+  "pipeline_stages": {
+    "stage_1_preparation": {
+      "node": "Format Dual-Stream Chunks",
+      "node_id": "7b8d4f6c-8439-4d8b-9a4c-53e7f9e8a014",
+      "type": "n8n-nodes-base.code v2",
+      "session_context_source": "$('Process Sessions Sequentially').item.json",
+      "framework_source": "$input.first().json.response (from Ollama Framework Extractor)",
+      "output_items": 4,
+      "output_item_contract": {
+        "item_0": {
+          "session_id": "string",
+          "stream_type": "framework",
+          "content": "string (name + definition + mechanism + application)",
+          "metadata": {
+            "framework_name": "string",
+            "session_id": "string",
+            "source_timestamps": "array of strings"
+          },
+          "chunk_index": 0,
+          "total_session_chunks": 4
+        },
+        "item_1_to_3": {
+          "session_id": "string",
+          "stream_type": "voice_sample",
+          "content": "string (verbatim Dr. Sara Hegy turn)",
+          "metadata": {
+            "speaker": "Dr. Sara Hegy",
+            "session_id": "string",
+            "source_timestamps": "array of strings",
+            "char_count": "number",
+            "turn_count": 1
+          },
+          "chunk_index": "1..3",
+          "total_session_chunks": 4
+        }
+      }
+    },
+    "stage_2_embedding": {
+      "node": "Ollama Chunk Embedder",
+      "node_id": "53e7f9e8-8439-4d8b-9a4c-7b8d4f6c0016",
+      "type": "n8n-nodes-base.httpRequest v4.1",
+      "endpoint": "POST /api/embeddings",
+      "model": "bge-m3:latest",
+      "input_handling": "Processes each of the 4 items sequentially in item order (0, 1, 2, 3).",
+      "http_response_behavior": "Replaces $json with HTTP response body: { \"embedding\": [1024 floats] }.",
+      "output_items": 4,
+      "output_order_guarantee": "n8n guarantees deterministic 1-to-1 sequential array order matching input items 0..3."
+    },
+    "stage_3_assembly_and_validation": {
+      "node": "Validate & Assemble Chunks",
+      "node_id": "6c4d8b9a-9a4c-4f6c-7b8d-53e7f9e8a021",
+      "type": "n8n-nodes-base.code v2",
+      "field_access_proof": {
+        "session_id": "Retrieved from $('Process Sessions Sequentially').item.json.id and verified non-empty string.",
+        "stream_type": "Reconstructed deterministically: index 0 is 'framework', indices 1..3 are 'voice_sample'.",
+        "content": "Reconstructed deterministically: framework content from framework extractor, voice content from session transcript turns.",
+        "metadata": "Reconstructed deterministically: framework metadata and voice metadata (speaker, timestamps, char_count, turn_count).",
+        "embedding": "Extracted directly from $input.all()[i].json.embedding (the 1024-float vector from Ollama Chunk Embedder)."
+      },
+      "validation_guards": [
+        "items.length === rawChunks.length (asserts exact 4 === 4 count match)",
+        "Array.isArray(embedding) && embedding.length === 1024",
+        "Number.isFinite(embedding[d]) for all 1024 dimensions",
+        "stream_type in ['framework', 'voice_sample']",
+        "speaker === 'Dr. Sara Hegy' for all voice chunks",
+        "assembledChunks.length > 0"
+      ],
+      "output_contract": {
+        "session_id": "string",
+        "chunk_count": 4,
+        "framework_count": 1,
+        "voice_count": 3,
+        "chunks": "array of 4 complete chunk objects"
+      }
+    },
+    "stage_4_database_replacement": {
+      "node": "Atomic Vault Replacement Function",
+      "node_id": "7b8d4f6c-8439-4d8b-9a4c-53e7f9e8a022",
+      "type": "n8n-nodes-base.postgres v2.4",
+      "sql_query": "SELECT * FROM ingest_session_vault($1, $2::jsonb);",
+      "query_replacement": "={{ $json.session_id }}, {{ JSON.stringify($json.chunks) }}",
+      "call_frequency": "Exactly 1 call per accepted session.",
+      "transaction_safety": "pg_advisory_xact_lock(hashtext(p_session_id)) ensures transactional atomic replacement."
+    }
+  },
+  "lineage_verification_status": "VERIFIED_SAFE"
+}

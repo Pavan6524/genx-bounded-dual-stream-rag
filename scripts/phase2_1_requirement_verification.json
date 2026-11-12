@@ -1,0 +1,78 @@
+{
+  "audit": "Phase 2.1 Assignment Requirement Verification",
+  "project": "GenX Leadership Academy Bounded Dual-Stream RAG",
+  "workflow_file": "workflows/ingestion_firewall.json",
+  "timestamp": "2026-11-12T23:54:30Z",
+  "requirements": [
+    {
+      "id": "REQ-01",
+      "name": "Mock Transcript Dataset Parsing",
+      "target_node": "Read Transcripts File & Parse Transcripts Array",
+      "evidence": "readWriteFile reads /data/mock_transcripts.json; Parse Transcripts Array parses UTF-8 JSON without BOM, validates array structure, maps each session to { json: transcript }.",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "REQ-02",
+      "name": "Turn Sampling (First 40 + Last 20 for >60 turns)",
+      "target_node": "Turn Sampler",
+      "evidence": "Evaluates transcript.length. If > 60: first40.concat(last20); else slice(). Verified no duplicate sampling for <= 60 turns.",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "REQ-03",
+      "name": "Classification Output Schema",
+      "target_node": "Ollama Classifier & Validate Classification",
+      "evidence": "Prompts llama3.2:1b for summary, meeting_type, confidence_score. Validate Classification parses JSON, clamps confidence 0.0-1.0, falls back safely if regex needed.",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "REQ-04",
+      "name": "Confidence Threshold (Client Coaching >= 0.80)",
+      "target_node": "Firewall Gate",
+      "evidence": "If node evaluates is_accepted === true, requiring meeting_type === 'Client Coaching' AND confidence_score >= 0.80.",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "REQ-05",
+      "name": "Relational Archive for Rejected Meetings (Zero Embeddings)",
+      "target_node": "Format Rejected Record & Transactional Archive Rejected",
+      "evidence": "Firewall Gate false branch routes to archive_rejected_meeting($1..$6) and loops back to Process Sessions Sequentially. Never invokes Ollama embedder or knowledge_vault.",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "REQ-06",
+      "name": "Conceptual Coaching Framework Stream",
+      "target_node": "Ollama Framework Extractor & Format Dual-Stream Chunks",
+      "evidence": "Extracts framework name, definition, mechanism, application, and source timestamps. Preserves meaning without inventing frameworks.",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "REQ-07",
+      "name": "Coach-Only Verbatim Voice Stream",
+      "target_node": "Format Dual-Stream Chunks",
+      "evidence": "Strictly filters turns on speaker === 'Dr. Sara Hegy'. Client speech is 100% excluded. Non-adjacent turns preserved individually. SES-101: 280, 402, 154 chars; SES-102: 261, 393, 132 chars.",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "REQ-08",
+      "name": "1024-Dimensional Embeddings",
+      "target_node": "Ollama Chunk Embedder & Validate & Assemble Chunks",
+      "evidence": "Ollama bge-m3 embeds all 4 chunks. Validate & Assemble Chunks checks Array.isArray and length === 1024 and Number.isFinite for all dimensions. PL/pgSQL function validates vector_dims = 1024.",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "REQ-09",
+      "name": "Atomic Per-Session Ingestion",
+      "target_node": "Atomic Vault Replacement Function",
+      "evidence": "Calls ingest_session_vault(p_session_id, p_chunks::jsonb) with advisory locking. Deletes prior records for session_id and inserts all 4 chunks atomically.",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "REQ-10",
+      "name": "Session Isolation & Sequential Processing",
+      "target_node": "Process Sessions Sequentially & Entire Pipeline",
+      "evidence": "Process Sessions Sequentially runs batchSize 1. Each accepted session completes embedding and database replacement before next session begins. Zero session mixing.",
+      "status": "VERIFIED"
+    }
+  ]
+}

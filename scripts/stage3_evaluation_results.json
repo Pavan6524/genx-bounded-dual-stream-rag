@@ -1,0 +1,62 @@
+[
+  {
+    "session_id": "TEST-SES-101",
+    "raw_model_response": "{ \n  \"summary\": \"Mark D. discusses his struggles with micromanagement and the importance of defining exit criteria for strategic initiatives.\",\n  \"meeting_type\": \"Client Coaching\",\n  \"confidence_score\": 0.95 \n}",
+    "parsed_json": {
+      "summary": "Mark D. discusses his struggles with micromanagement and the importance of defining exit criteria for strategic initiatives.",
+      "meeting_type": "Client Coaching",
+      "confidence_score": 0.95
+    },
+    "meeting_type": "Client Coaching",
+    "confidence_score": 0.95,
+    "summary": "Mark D. discusses his struggles with micromanagement and the importance of defining exit criteria for strategic initiatives.",
+    "is_accepted": true,
+    "rejection_reason": null,
+    "elapsed_sec": 27.26465082168579
+  },
+  {
+    "session_id": "TEST-SES-102",
+    "raw_model_response": "{ \n  \"summary\": \"Elena R. is scheduled to deliver tough feedback to her VP of Product, but first needs to run the Table and Shoulder Test to understand the root cause of the issue.\",\n  \"meeting_type\": \"Client Coaching\",\n  \"confidence_score\": 0.95 \n}",
+    "parsed_json": {
+      "summary": "Elena R. is scheduled to deliver tough feedback to her VP of Product, but first needs to run the Table and Shoulder Test to understand the root cause of the issue.",
+      "meeting_type": "Client Coaching",
+      "confidence_score": 0.95
+    },
+    "meeting_type": "Client Coaching",
+    "confidence_score": 0.95,
+    "summary": "Elena R. is scheduled to deliver tough feedback to her VP of Product, but first needs to run the Table and Shoulder Test to understand the root cause of the issue.",
+    "is_accepted": true,
+    "rejection_reason": null,
+    "elapsed_sec": 21.82933020591736
+  },
+  {
+    "session_id": "TEST-SES-103",
+    "raw_model_response": "{ \n  \"summary\": \"Discussed webhook timeout on Airtable synchronization node and PostgreSQL database migration with Youssef.\",\n  \"meeting_type\": \"Internal Operations\",\n  \"confidence_score\": 1.0 }",
+    "parsed_json": {
+      "summary": "Discussed webhook timeout on Airtable synchronization node and PostgreSQL database migration with Youssef.",
+      "meeting_type": "Internal Operations",
+      "confidence_score": 1.0
+    },
+    "meeting_type": "Internal Operations",
+    "confidence_score": 1.0,
+    "summary": "Discussed webhook timeout on Airtable synchronization node and PostgreSQL database migration with Youssef.",
+    "is_accepted": false,
+    "rejection_reason": "Non-coaching meeting type: Internal Operations",
+    "elapsed_sec": 16.821765422821045
+  },
+  {
+    "session_id": "TEST-SES-104",
+    "raw_model_response": "{ \n  \"summary\": \"A sales representative from GenX Leadership Academy discusses their retainer pricing and minimum contract terms with a classification expert.\",\n  \"meeting_type\": \"Sales Discovery\",\n  \"confidence_score\": 0.95 }",
+    "parsed_json": {
+      "summary": "A sales representative from GenX Leadership Academy discusses their retainer pricing and minimum contract terms with a classification expert.",
+      "meeting_type": "Sales Discovery",
+      "confidence_score": 0.95
+    },
+    "meeting_type": "Sales Discovery",
+    "confidence_score": 0.95,
+    "summary": "A sales representative from GenX Leadership Academy discusses their retainer pricing and minimum contract terms with a classification expert.",
+    "is_accepted": false,
+    "rejection_reason": "Non-coaching meeting type: Sales Discovery",
+    "elapsed_sec": 17.128814458847046
+  }
+]

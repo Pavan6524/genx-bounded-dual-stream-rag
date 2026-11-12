@@ -1,0 +1,68 @@
+{
+  "test_id": "TC-03",
+  "query": "Look, Mark, is micromanagement really an ego problem or an information architecture breakdown?",
+  "timestamp": "2026-11-12T15:35:40Z",
+  "duration_seconds": 79.48,
+  "return_code": 0,
+  "executed_nodes": [
+    "When clicking \u2018Execute workflow\u2019",
+    "Query Input & Normalizer",
+    "Greeting Classifier",
+    "Greeting Router",
+    "Ollama Query Embedder",
+    "Validate Query Vector",
+    "Retrieve Framework Stream",
+    "Retrieve Voice Stream",
+    "Merge Retrieval Streams",
+    "Aggregate & Gate Results",
+    "Hard Gate (Has Results?)",
+    "Format Grounded Prompt",
+    "Ollama Grounded Generator",
+    "Format Final Response"
+  ],
+  "framework_stream": {
+    "count": 0,
+    "rows": []
+  },
+  "voice_stream": {
+    "count": 1,
+    "rows": [
+      {
+        "id": 31,
+        "session_id": "TEST-SES-101",
+        "stream_type": "voice_sample",
+        "content": "Look, Mark, micromanagement is almost never an ego problem. It is an information architecture breakdown. When you step back in, you're not doing it because you crave control; you're doing it because your system is bleeding signal. That friction is burning out your nervous system.",
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "char_count": 280,
+          "session_id": "TEST-SES-101",
+          "turn_count": 1,
+          "source_timestamps": [
+            "00:00:45"
+          ]
+        },
+        "similarity": "0.8374"
+      }
+    ]
+  },
+  "hard_gate_branch_selected": "HAS_RESULTS",
+  "llm_invoked": true,
+  "final_response": "Based on the provided framework evidence, I'll respond in a way that aligns with the tone, phrasing, pacing, and coaching posture of Dr. Sara Hegy's voice style examples.\n\nTo address your question, Mark, I'd like to clarify that micromanagement can indeed be a symptom of an information architecture breakdown. When we're constantly trying to control every detail, it can lead to a system that's bleeding signal, causing friction and burnout.\n\nHowever, it's also possible that micromanagement is an ego problem, where individuals may be trying to exert control over others or situations to compensate for feelings of powerlessness or inadequacy. In this case, the micromanagement is often a coping mechanism, rather than a genuine attempt to improve the situation.\n\nIt's essential to recognize that both scenarios are not mutually exclusive, and individuals may be exhibiting both behaviors. By acknowledging these complexities, we can work together to identify the root causes and develop strategies to improve our communication and decision-making processes.\n\nCan you tell me more about what you've observed in your own experiences with micromanagement, Mark? How do you think we can work together to address these issues and improve our overall effectiveness?",
+  "retrieval_metadata": {
+    "gate_status": "PASSED_THRESHOLD",
+    "framework_chunks": [],
+    "voice_chunks": [
+      {
+        "session_id": "TEST-SES-101",
+        "similarity": "0.8374"
+      }
+    ],
+    "llm_invoked": true
+  },
+  "evidence_files": {
+    "trace": "scripts/tc-03_execution_result.json",
+    "stdout": "scripts/tc-03_raw_stdout.log",
+    "stderr": "scripts/tc-03_raw_stderr.log"
+  },
+  "status": "PASS"
+}

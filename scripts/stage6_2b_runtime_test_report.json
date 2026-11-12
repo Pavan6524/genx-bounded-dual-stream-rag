@@ -1,0 +1,63 @@
+{
+  "stage": "Stage 6.2B \u2014 Controlled Runtime Retrieval Testing",
+  "phase": "Phase 2 (TC-01 Greeting Bypass Only)",
+  "status": "PASS",
+  "execution_timestamp": "2026-11-12T13:01:20Z",
+  "workflow_id": "TSvKBGpM9nK7eb3U",
+  "workflow_name": "Bounded Dual-Stream Gated Retrieval",
+  "workflow_active_state": {
+    "before_test": false,
+    "after_test": false
+  },
+  "database_counts": {
+    "knowledge_vault_before": 8,
+    "knowledge_vault_after": 8,
+    "rejected_meetings_before": 2,
+    "rejected_meetings_after": 2,
+    "mutations": 0
+  },
+  "test_results": {
+    "TC-01": {
+      "name": "Greeting Bypass",
+      "input_query": "Hello",
+      "status": "PASS",
+      "execution_id": null,
+      "duration_seconds": 27.04,
+      "executed_nodes": [
+        "When clicking \u2018Execute workflow\u2019",
+        "Query Input & Normalizer",
+        "Greeting Classifier",
+        "Greeting Router",
+        "Static Greeting Response"
+      ],
+      "prohibited_nodes_executed": [],
+      "network_calls": {
+        "ollama_embedding_called": false,
+        "postgresql_queried": false,
+        "ollama_generation_called": false
+      },
+      "final_response": "Hello! I am Dr. Sara Hegy's executive coaching assistant at GenX Leadership Academy. How can I support your leadership journey or discuss our executive coaching frameworks today?",
+      "retrieval_metadata": {
+        "gate_status": "BYPASS_GREETING",
+        "is_greeting": true,
+        "embedding_called": false,
+        "sql_called": false,
+        "llm_invoked": false
+      },
+      "evidence_file": "scripts/tc01_execution_result.json"
+    }
+  },
+  "remaining_tests_status": {
+    "TC-02_to_TC-10": "PAUSED_PENDING_APPROVAL"
+  },
+  "resource_and_latency_observations": {
+    "tc01_wall_clock_seconds": 27.04,
+    "ram_pressure": "Normal (< 100MB CLI overhead)",
+    "ollama_load": "Zero inference triggered"
+  },
+  "files_created_or_modified": [
+    "scripts/tc01_execution_result.json",
+    "scripts/stage6_2b_runtime_test_report.json"
+  ],
+  "outstanding_issues": []
+}

@@ -1,0 +1,110 @@
+{
+  "test_id": "TC-04",
+  "query": "How do top performers use the Completion with Integrity framework and binary exit criteria to eliminate micromanagement?",
+  "timestamp": "2026-11-12T19:08:59Z",
+  "duration_seconds": 91.51,
+  "return_code": 0,
+  "executed_nodes": [
+    "When clicking \u2018Execute workflow\u2019",
+    "Query Input & Normalizer",
+    "Greeting Classifier",
+    "Greeting Router",
+    "Ollama Query Embedder",
+    "Validate Query Vector",
+    "Retrieve Framework Stream",
+    "Retrieve Voice Stream",
+    "Merge Retrieval Streams",
+    "Aggregate & Gate Results",
+    "Hard Gate (Has Results?)",
+    "Format Grounded Prompt",
+    "Ollama Grounded Generator",
+    "Format Final Response"
+  ],
+  "framework_stream": {
+    "count": 1,
+    "rows": [
+      {
+        "id": 30,
+        "session_id": "TEST-SES-101",
+        "stream_type": "framework",
+        "content": "Framework: Completion with Integrity\nDefinition: Look, micromanagement is almost never an ego problem. It is an information architecture breakdown. When you step back in, you're not doing it because you crave control; you're doing it because your system is bleeding signal. That friction is burning out your nervous system.\nMechanism: The reality is, top performers don't fail because of capability; they fail against ambiguous standards. In our practice, we use a framework called Completion with Integrity. Before anyone starts a strategic initiative, you define the binary exit criteria upfront. You stop asking 'How is this going?' and start enforcing pre-agreed handoff constraints. When clarity goes up, surveillance drops to zero.\nApplication: Mark D. is defining exit criteria for the enterprise audit and stepping away from the daily review.",
+        "metadata": {
+          "session_id": "TEST-SES-101",
+          "framework_name": "Completion with Integrity",
+          "source_timestamps": [
+            "00:01:55",
+            "00:44:10",
+            "00:44:40"
+          ]
+        },
+        "similarity": "0.7666"
+      }
+    ]
+  },
+  "voice_stream": {
+    "count": 2,
+    "rows": [
+      {
+        "id": 32,
+        "session_id": "TEST-SES-101",
+        "stream_type": "voice_sample",
+        "content": "The reality is, top performers don't fail because of capability; they fail against ambiguous standards. In our practice, we use a framework called Completion with Integrity. Before anyone starts a strategic initiative, you define the binary exit criteria upfront. You stop asking 'How is this going?' and start enforcing pre-agreed handoff constraints. When clarity goes up, surveillance drops to zero.",
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "char_count": 402,
+          "session_id": "TEST-SES-101",
+          "turn_count": 1,
+          "source_timestamps": [
+            "00:01:55"
+          ]
+        },
+        "similarity": "0.6850"
+      },
+      {
+        "id": 42,
+        "session_id": "SES-101",
+        "stream_type": "voice_sample",
+        "content": "The reality is, top performers don't fail because of capability; they fail against ambiguous standards. In our practice, we use a framework called Completion with Integrity. Before anyone starts a strategic initiative, you define the binary exit criteria upfront. You stop asking 'How is this going?' and start enforcing pre-agreed handoff constraints. When clarity goes up, surveillance drops to zero.",
+        "metadata": {
+          "speaker": "Dr. Sara Hegy",
+          "char_count": 402,
+          "session_id": "SES-101",
+          "turn_count": 1,
+          "source_timestamps": [
+            "00:01:55"
+          ]
+        },
+        "similarity": "0.6850"
+      }
+    ]
+  },
+  "hard_gate_branch_selected": "HAS_RESULTS",
+  "llm_invoked": true,
+  "final_response": "I can sense the leader's frustration and desire to break free from micromanagement. It's a natural response, especially when faced with ambiguity and unclear expectations. Let's dive into how top performers use the Completion with Integrity framework to eliminate micromanagement.\n\nFirstly, it's essential to understand that top performers don't fail because of capability; they fail against ambiguous standards. This mindset shift is crucial in eliminating micromanagement. By defining clear exit criteria upfront, top performers create a sense of clarity and purpose, which in turn, reduces the need for constant surveillance and micromanagement.\n\nWhen defining exit criteria, top performers use a binary approach. They identify specific, measurable objectives and set clear expectations for each task or project. This approach helps to eliminate ambiguity and ensures that everyone involved is on the same page.\n\nBy enforcing pre-agreed handoff constraints, top performers also create a culture of accountability. When clarity goes up, surveillance drops to zero, and everyone is focused on delivering results. This approach helps to reduce the need for constant questioning and feedback, which can be draining and demotivating.\n\nIt's also worth noting that top performers are not afraid to say \"no\" or \"stop\" when necessary. They understand that micromanagement can be a sign of a lack of trust and a desire to control. By setting clear expectations and boundaries, top performers can maintain their autonomy while still delivering results.\n\nIn Mark D.'s case, he's taking a significant step by stepping away from the daily review and defining exit criteria for the enterprise audit. By doing so, he's creating a clear sense of purpose and reducing the need for micromanagement. It's a powerful example of how top performers use the Completion with Integrity framework to eliminate micromanagement and achieve their goals.",
+  "retrieval_metadata": {
+    "gate_status": "PASSED_THRESHOLD",
+    "framework_chunks": [
+      {
+        "session_id": "TEST-SES-101",
+        "similarity": "0.7666"
+      }
+    ],
+    "voice_chunks": [
+      {
+        "session_id": "TEST-SES-101",
+        "similarity": "0.6850"
+      },
+      {
+        "session_id": "SES-101",
+        "similarity": "0.6850"
+      }
+    ],
+    "llm_invoked": true
+  },
+  "evidence_files": {
+    "trace": "scripts/tc-04_execution_result.json",
+    "stdout": "scripts/tc-04_raw_stdout.log",
+    "stderr": "scripts/tc-04_raw_stderr.log"
+  },
+  "status": "PASS"
+}

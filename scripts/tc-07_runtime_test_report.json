@@ -1,0 +1,39 @@
+{
+  "test_id": "TC-07",
+  "query": "What is the optimal fertilizer ratio for growing hydroponic tomatoes in winter?",
+  "timestamp": "2026-11-12T15:32:46Z",
+  "duration_seconds": 25.3,
+  "return_code": 0,
+  "executed_nodes": [
+    "When clicking \u2018Execute workflow\u2019",
+    "Query Input & Normalizer",
+    "Greeting Classifier",
+    "Greeting Router",
+    "Ollama Query Embedder",
+    "Validate Query Vector",
+    "Retrieve Framework Stream",
+    "Retrieve Voice Stream",
+    "Merge Retrieval Streams",
+    "Aggregate & Gate Results",
+    "Hard Gate (Has Results?)",
+    "Return Zero Result Output"
+  ],
+  "framework_stream": {
+    "count": 0,
+    "rows": []
+  },
+  "voice_stream": {
+    "count": 0,
+    "rows": []
+  },
+  "hard_gate_branch_selected": "ZERO_RESULTS",
+  "llm_invoked": false,
+  "final_response": "No documented coaching frameworks match this topic.",
+  "retrieval_metadata": null,
+  "evidence_files": {
+    "trace": "scripts/tc-07_execution_result.json",
+    "stdout": "scripts/tc-07_raw_stdout.log",
+    "stderr": "scripts/tc-07_raw_stderr.log"
+  },
+  "status": "PASS"
+}

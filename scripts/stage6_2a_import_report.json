@@ -1,0 +1,28 @@
+{
+  "stage": "Stage 6.2A \u2014 Controlled n8n Workflow Import",
+  "status": "PASS",
+  "backup_location": "workflows/backups\\n8n_state_backup_pre_stage6_2a_20261112_173037.json",
+  "imported_workflow_id": "TSvKBGpM9nK7eb3U",
+  "workflow_name": "Bounded Dual-Stream Gated Retrieval",
+  "target_project_id": "w24y2iBD8xkaEi8K",
+  "n8n_version": "2.47.4",
+  "node_count": 16,
+  "connection_verification": "IDENTICAL",
+  "local_vs_live_comparison": {
+    "node_names_identical": true,
+    "node_ids_identical": true,
+    "node_types_identical": true,
+    "connections_identical": true,
+    "sql_thresholds_verified": true,
+    "credentials_verified": true,
+    "ollama_endpoints_verified": true,
+    "greeting_bypass_verified": true,
+    "zero_result_fallback_verified": true
+  },
+  "activation_state": false,
+  "files_created": [
+    "workflows/live_exported_retrieval_wf.json",
+    "scripts/stage6_2a_import_report.json"
+  ],
+  "errors_or_outstanding_issues": []
+}

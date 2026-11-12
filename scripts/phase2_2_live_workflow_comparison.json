@@ -1,0 +1,141 @@
+{
+  "timestamp": "2026-11-12T18:55:49.201Z",
+  "target_workflow_id": "IlBw4RRELuh02Akm",
+  "checks": {
+    "workflow_id": {
+      "status": "PASS",
+      "canonical_id": "IlBw4RRELuh02Akm",
+      "live_id": "IlBw4RRELuh02Akm"
+    },
+    "workflow_name": {
+      "status": "PASS",
+      "canonical_name": "Ingestion Firewall & Dual-Stream Extraction",
+      "live_name": "Ingestion Firewall & Dual-Stream Extraction"
+    },
+    "active_state": {
+      "status": "PASS",
+      "canonical_active": false,
+      "live_active": false
+    },
+    "node_count": {
+      "status": "PASS",
+      "canonical_count": 15,
+      "live_count": 15
+    },
+    "nodes_audit": {
+      "status": "PASS",
+      "mismatches": 0,
+      "nodes": [
+        {
+          "name": "When clicking ‘Execute workflow’",
+          "id": "e6a2c2bf-8bf0-4f91-88f5-19e072f91df0",
+          "type": "n8n-nodes-base.manualTrigger",
+          "typeVersion": 1,
+          "status": "PASS"
+        },
+        {
+          "name": "Read Transcripts File",
+          "id": "7b8d4f6c-8439-4d8b-9a4c-53e7f9e8a001",
+          "type": "n8n-nodes-base.readWriteFile",
+          "typeVersion": 1,
+          "status": "PASS"
+        },
+        {
+          "name": "Parse Transcripts Array",
+          "id": "9a4c53e7-7b8d-4f6c-8439-53e7f9e8a002",
+          "type": "n8n-nodes-base.code",
+          "typeVersion": 2,
+          "status": "PASS"
+        },
+        {
+          "name": "Process Sessions Sequentially",
+          "id": "84394d8b-9a4c-53e7-7b8d-53e7f9e8a003",
+          "type": "n8n-nodes-base.splitInBatches",
+          "typeVersion": 3,
+          "status": "PASS"
+        },
+        {
+          "name": "Turn Sampler",
+          "id": "53e7f9e8-8439-4d8b-9a4c-7b8d4f6c0004",
+          "type": "n8n-nodes-base.code",
+          "typeVersion": 2,
+          "status": "PASS"
+        },
+        {
+          "name": "Ollama Classifier",
+          "id": "4d8b9a4c-53e7-7b8d-8439-7b8d4f6c0005",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 4.1,
+          "status": "PASS"
+        },
+        {
+          "name": "Validate Classification",
+          "id": "7b8d4f6c-53e7-4d8b-9a4c-7b8d4f6c0006",
+          "type": "n8n-nodes-base.code",
+          "typeVersion": 2,
+          "status": "PASS"
+        },
+        {
+          "name": "Firewall Gate",
+          "id": "53e7f9e8-7b8d-4f6c-8439-7b8d4f6c0007",
+          "type": "n8n-nodes-base.if",
+          "typeVersion": 1,
+          "status": "PASS"
+        },
+        {
+          "name": "Format Rejected Record",
+          "id": "84394d8b-7b8d-4f6c-53e7-7b8d4f6c0008",
+          "type": "n8n-nodes-base.code",
+          "typeVersion": 2,
+          "status": "PASS"
+        },
+        {
+          "name": "Transactional Archive Rejected",
+          "id": "4d8b9a4c-8439-7b8d-53e7-7b8d4f6c0010",
+          "type": "n8n-nodes-base.postgres",
+          "typeVersion": 2.4,
+          "status": "PASS"
+        },
+        {
+          "name": "Ollama Framework Extractor",
+          "id": "9a4c53e7-4d8b-7b8d-8439-7b8d4f6c0012",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 4.1,
+          "status": "PASS"
+        },
+        {
+          "name": "Format Dual-Stream Chunks",
+          "id": "7b8d4f6c-8439-4d8b-9a4c-53e7f9e8a014",
+          "type": "n8n-nodes-base.code",
+          "typeVersion": 2,
+          "status": "PASS"
+        },
+        {
+          "name": "Ollama Chunk Embedder",
+          "id": "53e7f9e8-8439-4d8b-9a4c-7b8d4f6c0016",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 4.1,
+          "status": "PASS"
+        },
+        {
+          "name": "Validate & Assemble Chunks",
+          "id": "6c4d8b9a-9a4c-4f6c-7b8d-53e7f9e8a021",
+          "type": "n8n-nodes-base.code",
+          "typeVersion": 2,
+          "status": "PASS"
+        },
+        {
+          "name": "Atomic Vault Replacement Function",
+          "id": "7b8d4f6c-8439-4d8b-9a4c-53e7f9e8a022",
+          "type": "n8n-nodes-base.postgres",
+          "typeVersion": 2.4,
+          "status": "PASS"
+        }
+      ]
+    },
+    "connections_audit": {
+      "status": "PASS",
+      "mismatches": 0
+    }
+  }
+}

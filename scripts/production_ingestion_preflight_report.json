@@ -1,0 +1,48 @@
+{
+  "phase": "Phase 3 — Production Ingestion Preflight",
+  "timestamp": "2026-11-12T16:51:40.860Z",
+  "preflight_passed": true,
+  "checks": {
+    "input_dataset": {
+      "session_count": 4,
+      "session_ids": [
+        "SES-101",
+        "SES-102",
+        "SES-103",
+        "SES-104"
+      ],
+      "contains_exact_ses_101_to_104": true
+    },
+    "backup_verification": {
+      "exists": true,
+      "size_bytes": 98631,
+      "non_empty": true
+    },
+    "database_baseline": {
+      "knowledge_vault_total": 8,
+      "knowledge_vault_test": 8,
+      "knowledge_vault_prod": 0,
+      "rejected_meetings_total": 2,
+      "rejected_meetings_test": 2,
+      "rejected_meetings_prod": 0,
+      "baseline_exact_8_and_2": true,
+      "production_records_zero": true
+    },
+    "workflow_inactive": {
+      "ingestion_active_state": false,
+      "retrieval_active_state": false,
+      "both_inactive": true
+    },
+    "ollama_endpoint": {
+      "reachable": true,
+      "required_models_present": true,
+      "models": [
+        "bge-m3:latest",
+        "llama3.2:1b"
+      ]
+    },
+    "concurrency": {
+      "no_active_runners": true
+    }
+  }
+}

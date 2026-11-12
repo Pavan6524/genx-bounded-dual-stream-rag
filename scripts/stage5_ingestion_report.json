@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "execution_timestamp": "2026-11-12T16:10:00Z",
+  "baseline_counts": {
+    "knowledge_vault": 0,
+    "rejected_meetings": 0
+  },
+  "final_counts": {
+    "knowledge_vault": 8,
+    "rejected_meetings": 2
+  },
+  "knowledge_vault_breakdown": {
+    "total_records": 8,
+    "framework_records": 2,
+    "voice_sample_records": 6,
+    "records_by_session": {
+      "TEST-SES-101": 4,
+      "TEST-SES-102": 4
+    },
+    "vector_dimension": 1024,
+    "non_1024_vectors": 0,
+    "duplicate_records": 0
+  },
+  "rejected_meetings_breakdown": {
+    "total_records": 2,
+    "records_by_session": {
+      "TEST-SES-103": 1,
+      "TEST-SES-104": 1
+    },
+    "has_embedding_column": false
+  },
+  "rejection_isolation_verification": {
+    "rejected_in_knowledge_vault": 0,
+    "passed": true
+  },
+  "transaction_outcome": "COMMITTED_ATOMICALLY",
+  "functions_invoked": [
+    "ingest_test_session_vault(p_session_id, p_chunks)",
+    "archive_rejected_test_meeting(p_session_id, p_meeting_type, p_confidence_score, p_summary, p_raw_transcript, p_rejection_reason)"
+  ],
+  "production_isolation": {
+    "production_functions_intact": true,
+    "production_sessions_modified": 0
+  },
+  "errors": []
+}

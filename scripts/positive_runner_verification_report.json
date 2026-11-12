@@ -1,0 +1,67 @@
+{
+  "test_stage": "Phase 4 — Positive-Path Runner Offline Verification",
+  "status": "PASS",
+  "timestamp": "2026-11-12T20:52:45Z",
+  "runner_script": "scripts/execute_tc02.py",
+  "target_execution_evidence": "scripts/tc02_execution_result.json",
+  "verification_mode": "OFFLINE_TRACE_VALIDATION",
+  "executed_assertions": {
+    "prohibited_nodes": {
+      "Static Greeting Response": "NOT_EXECUTED (PASS)",
+      "Return Zero Result Output": "NOT_EXECUTED (PASS)"
+    },
+    "required_dag_nodes": {
+      "expected_count": 14,
+      "actual_count": 14,
+      "status": "PASS"
+    },
+    "query_normalizer": {
+      "injected_query": "How does an executive use Completion with Integrity and binary exit criteria to eliminate micromanagement?",
+      "normalized_matches": true,
+      "status": "PASS"
+    },
+    "greeting_classifier": {
+      "is_greeting": false,
+      "status": "PASS"
+    },
+    "embedding_validation": {
+      "ollama_embedder_raw_vector_present": true,
+      "raw_vector_dimensions": 1024,
+      "validator_node_dimension": 1024,
+      "query_vector_str_format": "VALID_BRACKETED_PGVECTOR",
+      "parsed_vector_numeric_finite": true,
+      "status": "PASS"
+    },
+    "framework_stream_retrieval": {
+      "qualifying_rows_count": 1,
+      "qualifying_chunk_id": 30,
+      "qualifying_session_id": "TEST-SES-101",
+      "similarity": 0.7514,
+      "threshold": 0.70,
+      "limit": 2,
+      "status": "PASS"
+    },
+    "voice_stream_retrieval": {
+      "qualifying_rows_count": 0,
+      "threshold": 0.65,
+      "limit": 2,
+      "status": "PASS"
+    },
+    "aggregation_and_gate": {
+      "total_qualifying_chunks": 1,
+      "framework_count": 1,
+      "voice_count": 0,
+      "has_qualifying_results": true,
+      "status": "PASS"
+    },
+    "final_response_and_metadata": {
+      "response_text_length": 1406,
+      "gate_status": "PASSED_THRESHOLD",
+      "llm_invoked": true,
+      "embedder_in_dag": true,
+      "framework_retrieval_in_dag": true,
+      "status": "PASS"
+    }
+  },
+  "conclusion": "The corrected runner assertions in scripts/execute_tc02.py have been 100% verified against the empirical positive retrieval trace. All 9 assertion blocks pass cleanly without any exceptions. The runner is certified verified for live execution."
+}

@@ -1,0 +1,83 @@
+{
+  "stage": "Task 5 — Positive Retrieval Runtime Test Execution Report",
+  "status": "PASS_WORKFLOW_EXECUTION",
+  "timestamp": "2026-11-12T14:45:43Z",
+  "target_workflow_id": "TSvKBGpM9nK7eb3U",
+  "target_workflow_name": "Bounded Dual-Stream Gated Retrieval",
+  "workflow_active_state": false,
+  "test_query": "How does an executive use Completion with Integrity and binary exit criteria to eliminate micromanagement?",
+  "database_integrity": {
+    "knowledge_vault_rows_before": 8,
+    "knowledge_vault_rows_after": 8,
+    "rejected_meetings_rows_before": 2,
+    "rejected_meetings_rows_after": 2,
+    "mutations_detected": 0
+  },
+  "n8n_execution": {
+    "exit_code": 0,
+    "execution_status": "success",
+    "total_executed_nodes": 14,
+    "executed_nodes_dag": [
+      "When clicking ‘Execute workflow’",
+      "Query Input & Normalizer",
+      "Greeting Classifier",
+      "Greeting Router",
+      "Ollama Query Embedder",
+      "Validate Query Vector",
+      "Retrieve Framework Stream",
+      "Retrieve Voice Stream",
+      "Merge Retrieval Streams",
+      "Aggregate & Gate Results",
+      "Hard Gate (Has Results?)",
+      "Format Grounded Prompt",
+      "Ollama Grounded Generator",
+      "Format Final Response"
+    ],
+    "prohibited_nodes_executed": []
+  },
+  "retrieval_stream_results": {
+    "framework_stream": {
+      "qualifying_rows_count": 1,
+      "enforced_threshold": ">= 0.70",
+      "chunk_id": 30,
+      "session_id": "TEST-SES-101",
+      "similarity": "0.7514",
+      "framework_name": "Completion with Integrity"
+    },
+    "voice_stream": {
+      "qualifying_rows_count": 0,
+      "enforced_threshold": ">= 0.65",
+      "highest_score_observed": 0.6241,
+      "voice_fabrication": false,
+      "section_b_status": "No voice style examples met the similarity threshold (>= 0.65). Adopt a professional, direct, and supportive executive coaching tone."
+    }
+  },
+  "hard_gating_evaluation": {
+    "total_qualifying_chunks": 1,
+    "has_qualifying_results": true,
+    "gate_decision": "TRUE -> Branch 0 (Has Results)",
+    "zero_result_fallback_invoked": false
+  },
+  "grounded_generator_execution": {
+    "model": "llama3.2:1b",
+    "temperature": 0.2,
+    "llm_invoked": true,
+    "actual_response": "Based on the provided framework evidence, I'll respond to the user's question in a focused, supportive executive coaching tone, strictly adhering to Section A and Section B, and avoiding any claims not present in Section A.\n\nTo address your question, using Completion with Integrity and binary exit criteria can help eliminate micromanagement by establishing clear, measurable objectives and enforcing pre-agreed handoff constraints. By defining exit criteria upfront, you can ensure that any initiative is aligned with the organization's overall goals and objectives.\n\nIn your case, Mark D. is stepping away from the daily review and defining exit criteria for the enterprise audit. By doing so, you're setting a clear direction and establishing a framework for the audit, which can help reduce micromanagement. By enforcing pre-agreed handoff constraints, you can ensure that the audit is completed efficiently and effectively, without unnecessary oversight.\n\nThis approach can help you and your team focus on delivering high-quality results, rather than getting bogged down in details. By establishing clear expectations and boundaries, you can create a more efficient and effective work environment, which can ultimately lead to increased productivity and better outcomes.\n\nIs there anything else you'd like to discuss or any further questions you have regarding this approach?"
+  },
+  "metadata_provenance": {
+    "gate_status": "PASSED_THRESHOLD",
+    "framework_chunks": [
+      {
+        "session_id": "TEST-SES-101",
+        "similarity": "0.7514"
+      }
+    ],
+    "voice_chunks": [],
+    "llm_invoked": true
+  },
+  "evidence_files": {
+    "execution_trace": "scripts/tc02_execution_result.json",
+    "raw_stdout": "scripts/tc02_raw_stdout.log",
+    "raw_stderr": "scripts/tc02_raw_stderr.log"
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "project": "GenX Leadership Academy Agentic RAG",
+  "plan_type": "Production Dataset Ingestion Mutation Plan",
+  "version": "1.0",
+  "created_at": "2026-11-12T21:24:00Z",
+  "input_file": "data/mock_transcripts.json",
+  "target_workflow_id": "IlBw4RRELuh02Akm",
+  "database": {
+    "host": "genx-postgres",
+    "port": 5432,
+    "database_name": "genx_rag"
+  },
+  "pre_ingestion_baseline": {
+    "knowledge_vault_total_rows": 8,
+    "knowledge_vault_sessions": ["TEST-SES-101", "TEST-SES-102"],
+    "knowledge_vault_framework_rows": 2,
+    "knowledge_vault_voice_rows": 6,
+    "rejected_meetings_total_rows": 2,
+    "rejected_meetings_sessions": ["TEST-SES-103", "TEST-SES-104"]
+  },
+  "expected_session_ingestion_breakdown": [
+    {
+      "session_id": "SES-101",
+      "title": "Weekly Strategy Session",
+      "turns_count": 6,
+      "expected_classification": "Client Coaching",
+      "expected_confidence_min": 0.80,
+      "firewall_action": "ACCEPT",
+      "expected_framework_chunks": 1,
+      "framework_name": "Completion with Integrity",
+      "expected_voice_chunks": 3,
+      "voice_speaker": "Dr. Sara Hegy",
+      "target_table": "knowledge_vault",
+      "expected_vault_rows_added": 4
+    },
+    {
+      "session_id": "SES-102",
+      "title": "Executive Catch-up",
+      "turns_count": 6,
+      "expected_classification": "Client Coaching",
+      "expected_confidence_min": 0.80,
+      "firewall_action": "ACCEPT",
+      "expected_framework_chunks": 1,
+      "framework_name": "Table and Shoulder Test",
+      "expected_voice_chunks": 3,
+      "voice_speaker": "Dr. Sara Hegy",
+      "target_table": "knowledge_vault",
+      "expected_vault_rows_added": 4
+    },
+    {
+      "session_id": "SES-103",
+      "title": "Technical Sync & Integrations",
+      "turns_count": 5,
+      "expected_classification": "Internal Operations",
+      "firewall_action": "REJECT",
+      "rejection_reason": "Internal Operations discussion; Dr. Sara Hegy absent",
+      "target_table": "rejected_meetings",
+      "expected_embeddings_generated": 0,
+      "expected_vault_rows_added": 0,
+      "expected_rejected_rows_added": 1
+    },
+    {
+      "session_id": "SES-104",
+      "title": "Partnership Discovery Call",
+      "turns_count": 5,
+      "expected_classification": "Sales Discovery",
+      "firewall_action": "REJECT",
+      "rejection_reason": "Sales Discovery discussion; Dr. Sara Hegy absent",
+      "target_table": "rejected_meetings",
+      "expected_embeddings_generated": 0,
+      "expected_vault_rows_added": 0,
+      "expected_rejected_rows_added": 1
+    }
+  ],
+  "post_ingestion_expected_totals": {
+    "knowledge_vault_total_rows": 16,
+    "knowledge_vault_framework_rows": 4,
+    "knowledge_vault_voice_rows": 12,
+    "knowledge_vault_sessions": ["TEST-SES-101", "TEST-SES-102", "SES-101", "SES-102"],
+    "rejected_meetings_total_rows": 4,
+    "rejected_meetings_sessions": ["TEST-SES-103", "TEST-SES-104", "SES-103", "SES-104"]
+  },
+  "idempotency_and_conflict_handling": {
+    "re_ingestion_behavior": "Session replacement via DELETE WHERE session_id = $1 before insertion ensures idempotent re-runs",
+    "coexistence_strategy": "Production session IDs (SES-*) and test session IDs (TEST-SES-*) are strictly isolated by session_id strings; zero primary key collisions"
+  }
+}

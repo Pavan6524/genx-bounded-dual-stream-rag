@@ -1,0 +1,74 @@
+{
+  "stage": "Stage 6.2C.3 — TC-02 Non-Execution Diagnosis & Engineering Review",
+  "review_timestamp": "2026-11-12T19:12:00Z",
+  "status": "REVIEW_COMPLETE_AWAITING_APPROVAL",
+  "verified_corrections": [
+    {
+      "issue": "Premature AssertionError in execute_tc02.py suppressed execution trace and failure details.",
+      "resolution": "Raw stdout and stderr are now unconditionally persisted immediately after subprocess execution to scripts/tc02_raw_stdout.log and scripts/tc02_raw_stderr.log. Any JSON output is parsed and saved to scripts/tc02_execution_result.json prior to evaluating the exit code. If exit code is non-zero, a structured failure diagnosis is written to scripts/tc02_execution_failure_diagnosis.json and the script terminates cleanly without crashing.",
+      "file": "scripts/execute_tc02.py",
+      "verification": "AST and execution path verified."
+    },
+    {
+      "issue": "n8n default expression sandbox blocks $env access in Ollama Query Embedder (ExpressionError: access to env vars denied).",
+      "resolution": "Added '-e N8N_BLOCK_ENV_ACCESS_IN_NODE=false' to the docker exec command subprocess. This permits node expressions (Ollama Query Embedder and Ollama Grounded Generator) to resolve $env.OLLAMA_BASE_URL and model names without error.",
+      "scoping": "Exclusively scoped to the docker exec subshell process. The daemon container (genx-n8n), docker-compose.yml, and environment files remain completely unmodified.",
+      "file": "scripts/execute_tc02.py"
+    }
+  ],
+  "static_validation_results": {
+    "scripts_execute_tc02_py": {
+      "ast_parse": "PASS",
+      "syntax_valid": true,
+      "unhandled_exceptions_eliminated": true,
+      "automatic_retry_present": false
+    },
+    "data_tc_runner_bridge_js": {
+      "node_syntax_check": "PASS",
+      "workflow_id_assertion": "TSvKBGpM9nK7eb3U strictly enforced",
+      "pindata_injection": "manual executionMode with target query"
+    }
+  },
+  "execution_safety_assessment": {
+    "target_workflow": {
+      "id": "TSvKBGpM9nK7eb3U",
+      "name": "Bounded Dual-Stream Gated Retrieval",
+      "active_state": false,
+      "node_count": 16,
+      "verified_inactive": true
+    },
+    "ingestion_workflow": {
+      "id": "IlBw4RRELuh02Akm",
+      "name": "Ingestion Firewall & Dual-Stream Extraction (Runtime Test)",
+      "status": "UNTOUCHED"
+    },
+    "database_state": {
+      "knowledge_vault_records": 8,
+      "rejected_meetings_records": 2,
+      "mutations_permitted": 0,
+      "read_only_enforced": true
+    },
+    "retry_behavior": "Strictly single-shot; no automatic retries or loops exist in runner."
+  },
+  "remaining_risks": [
+    {
+      "risk": "Ollama CPU inference latency on host machine (Windows 11 with 8 GB RAM).",
+      "mitigation": "HTTP node timeouts are set to 60s for embedding and 90s for LLM generation; runner subprocess allows up to 180s before timeout."
+    },
+    {
+      "risk": "Similarity score boundary for TC-02 query.",
+      "mitigation": "Hard thresholds (Framework >= 0.70, Voice >= 0.65) are enforced directly inside PostgreSQL SQL queries. If similarity is below 0.70, the workflow deterministically returns zero results rather than hallucinating."
+    }
+  ],
+  "exact_proposed_execution_command": {
+    "runner_command": "python scripts/execute_tc02.py",
+    "underlying_docker_command": "docker exec -e N8N_RUNNERS_BROKER_PORT=5699 -e N8N_BLOCK_ENV_ACCESS_IN_NODE=false -e NODE_OPTIONS=--require=/data/tc_runner_bridge.js -e GENX_TEST_QUERY=\"How do I practice Completion with Integrity when closing projects?\" genx-n8n n8n execute --id=TSvKBGpM9nK7eb3U"
+  },
+  "safety_confirmation": {
+    "tc02_executed_this_turn": false,
+    "tc03_executed": false,
+    "workflow_modified": false,
+    "database_modified": false,
+    "docker_compose_modified": false
+  }
+}
